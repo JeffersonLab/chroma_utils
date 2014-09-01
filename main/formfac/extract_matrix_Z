@@ -1,0 +1,15 @@
+#!/bin/tcsh
+
+foreach i ($*)
+
+set f=`awk -v f=$i 'BEGIN{split(f,a,".");printf "%s.%s\n",a[5],a[6]}'`
+
+get_clm $i mass_0.$f.jack mass_0
+get_clm $i amp0_0.$f.jack amp0_0
+ensbc "Z_0.$f.jack = amp0_0.$f.jack * sqrt(2 * mass_0.$f.jack)"
+
+get_clm $i mass_1.$f.jack mass_1
+get_clm $i amp0_1.$f.jack amp0_1
+ensbc "Z_1.$f.jack = amp0_1.$f.jack * sqrt(2 * mass_1.$f.jack)"
+
+end

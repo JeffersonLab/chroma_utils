@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<A02Photon>
+<annotation>
+; $Id: a0_2photon.ini.xml,v 2.0 2008/12/05 04:43:47 edwards Exp $
+;
+; Input file for a0 -> 2photon decay
+</annotation>
+
+ <ThreePt>
+   <pattern>/cache/HASTE/NF0/aniso/6p1_12_48_xi3p0_wl/bb.unpack/dwf.2g.srcpt_snk3p6/pz%c%1d_py%c%1d_px%c%1d/%d/RHO_%c_1-A0_1_%c%1d_%c%1d_%c%1d.t%d.bb</pattern>
+   <!-- cfg_file>/cache/LHPC/NF0/aniso/6p1_12_48_xi3p0_wl/bb.unpack/dwf.2g.srcpt_snk3p6/cfg_list</cfg_file -->
+   <cfg_file>/home/dudek/twopt_3p6/jack100/cfg_list_100</cfg_file>
+   <cache_file>/cache/users/dudek/a0_2photon100.cache.lime</cache_file>
+ </ThreePt>
+ <TwoPt>
+   <pattern_Z_a0>
+     <!-- elem>/home/edwards/qcd/data/bb/6p1_12_48_xi3p0_wl/data/data5.unpack/jack.sls/Z_0.%s.D1500.jack</elem -->
+     <elem>/home/dudek/twopt_3p6/jack100/Z_0.%s.D1500.jack</elem>
+   </pattern_Z_a0>
+   <avg_2pt_func>true</avg_2pt_func>
+ </TwoPt>
+ <Energy>
+   <LSZ_photon_Qsq>0.0</LSZ_photon_Qsq>
+   <pattern_a0>
+     <!-- elem>/home/edwards/qcd/data/bb/6p1_12_48_xi3p0_wl/data/data5.unpack/jack.sls/mass_0.%s.D1500.jack</elem -->
+     <elem>/home/dudek/twopt_3p6/jack100/mass_0.%s.D1500.jack</elem>
+   </pattern_a0>
+ </Energy>
+ <Z_V_file_name>/home/dudek/twopt_3p6/jack100/Z_V.D1500.jack</Z_V_file_name>
+ <!-- Z_V_file_name>/home/edwards/qcd/data/bb/6p1_12_48_xi3p0_wl/data/data5.unpack/jack.sls.30/Z_V.D1500.jack</Z_V_file_name -->
+ <qsq_file_name>a0_2photon.qsq.dat</qsq_file_name>
+ <LatticeParam>
+   <nrow>12 12 12 48</nrow>
+   <j_decay>3</j_decay>
+   <a_fm>0.1</a_fm>
+   <AnisoParam>
+     <anisoP>true</anisoP>
+     <xi>3.0</xi>
+     <c_sq>1.06</c_sq>
+   </AnisoParam>
+ </LatticeParam>
+
+ <t_source_start>0</t_source_start>
+ <t_source_end>41</t_source_end>
+ <t_sink>42</t_sink>
+
+ <MomentumRange>
+   <mom2_max>4</mom2_max>
+   <sink_mom>
+     <elem>0 0 0</elem>
+   </sink_mom>
+ </MomentumRange>
+ 
+ <!--FixedMomentum>
+   <PiPf>
+     <elem>
+       <p_f>1 0 0</p_f>
+       <p_i>0 0 0</p_i>
+     </elem>
+   </PiPf>
+ </FixedMomentum-->
+ 
+ <fit_range>
+   <elem>0 0</elem>
+   <elem>1 1</elem>
+   <elem>2 2</elem>
+   <elem>3 3</elem>
+   <elem>4 4</elem>
+   <elem>5 5</elem>
+   <elem>6 6</elem>
+   <elem>7 7</elem>
+   <elem>8 8</elem>
+   <elem>9 9</elem>
+   <elem>10 10</elem>
+   <elem>11 11</elem>
+   <elem>12 12</elem>
+   <elem>13 13</elem>
+   <elem>14 14</elem>
+   <elem>15 15</elem>
+   <elem>16 16</elem>
+   <elem>17 17</elem>
+   <elem>18 18</elem>
+   <elem>19 19</elem>
+   <elem>20 20</elem>
+   <elem>21 21</elem>
+   <elem>22 22</elem>
+   <elem>23 23</elem>
+   <elem>24 24</elem>
+   <elem>25 25</elem>
+   <elem>26 26</elem>
+   <elem>27 27</elem>
+   <elem>28 28</elem>
+   <elem>29 29</elem>
+   <elem>30 30</elem>
+   <elem>31 31</elem>
+   <elem>32 32</elem>
+   <elem>33 33</elem>
+   <elem>34 34</elem>
+   <elem>35 35</elem>
+   <elem>36 36</elem>
+   <elem>37 37</elem>
+   <elem>38 38</elem>
+   <elem>39 39</elem>
+   <elem>40 40</elem>
+   <elem>41 41</elem>
+   <elem>42 42</elem>
+   <elem>43 43</elem>
+   <elem>44 44</elem>
+   <elem>45 45</elem>
+   <elem>46 46</elem>
+   <elem>47 47</elem>
+ </fit_range>
+</A02Photon>

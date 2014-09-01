@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<FpiParam_db>
+  <Fitter>
+     <Niter>100</Niter>
+     <Toler>1e-5</Toler>
+  </Fitter>
+  <CovarMat>
+     <block>1</block>
+     <fold>false</fold>
+  </CovarMat>
+  <filenameSP>stripped/pion.D810.DG4p35_1.P_1.SP</filenameSP>
+  <filenameSS>stripped/pion.D810.DG4p35_1.DG4p35_1.SS</filenameSS>
+  <quark_mass> 0.0810 0.0810 </quark_mass>
+  <mint>7</mint>
+  <maxt>15</maxt>
+  <fit_paramsSP> 1e-3 .4 </fit_paramsSP>
+  <fit_paramsSS> 1e-6 .4 </fit_paramsSS>
+  <mres>0.000726497</mres>
+  <block>1</block>
+</FpiParam_db>

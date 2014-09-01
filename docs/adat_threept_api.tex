@@ -1,0 +1,535 @@
+%
+% Description of the 3pt class structure for Adat
+%
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+
+% Somewhat wider and taller page than in art12.sty
+%\topmargin -0.4in  \headsep 0.0in  \textheight 9.0in
+%\oddsidemargin 0.25in  \evensidemargin 0.25in  \textwidth 6.5in
+
+\footnotesep 14pt
+\floatsep 28pt plus 2pt minus 4pt      % Nominal is double what is in art12.sty
+\textfloatsep 40pt plus 2pt minus 4pt
+\intextsep 28pt plus 4pt minus 4pt
+
+\topmargin -1cm
+\headsep 0mm
+\oddsidemargin 1mm
+\evensidemargin 1mm
+\textwidth 162mm
+%\textheight 21cm
+\textheight 9.5in
+\begin{document}
+
+\title{Three-Point Function Interface in Adat}
+
+\author{Robert Edwards}
+
+\date{8 January, 2008}
+\maketitle
+
+\section{Introduction}
+
+Lattice QCD data analysis involves manipulating ``ensemble''
+quantities that are treated as samples (or measurements) of some
+observable. {\bf Adat} provides an ensemble interface for reading,
+writing, and general functions operating on ensembles carried out in
+either jackknife or bootstrap. In addition, for three-point functions
+there is an additional interface that can access these functions (from
+data files like {\bf BuildingBlocks}, and hold them in an object
+indexed by a key constructed from the source and sink operator, the
+source and sink momentum, the gamma matrices at the insertion, and the
+gauge link insertions.
+
+Appendix~\ref{sec:jackknife} and Appendix~\ref{sec:bootstrap} describe
+how mathematical operations are done on the ensemble quantities. 
+Section~\ref{sec:ascii_format} describes the format of ensembles written
+in ascii and used by programs such as {\bf Ensbc}.
+
+\section{Ensemble Interface}\label{sec:ensemble}
+
+Ensembles correspond to a single quantum number for a collection
+of configurations. Adat allows one to declare objects of type ensemble,
+and then do operations on them in, say, jackknife statistics. 
+An example is as follows.
+\begin{verbatim}
+#include <ensem.h>
+using namespace ENSEM;
+
+EnsemReal a,b;      // Declaration - an ensemble of single real numbers
+read("filea", a);   // read file on disk
+b = sqrt(a) + log(a); // operations carried out in jackknife
+cout << "mean = " << mean(b) << "  error = " << sqrt(variance(b)) << endl;
+write("fileb", b);  // write back to disk
+
+EnsemVectorComplex c,d; // Could correspond to a time index within a config over complex
+VectorComplex d; // A non-ensemble type (called a scalar type)
+c.resize(30);    // 30 configs
+c.resizeObs(64); // time extent of 64, here the ``Obs'' stands for for ``observable''
+d.resizeObs(64);
+random(d);       // fill with random numbers
+pokeEnsem(d,exp(b),15);  // stuff exp(b) into the 15th config slot: 0-based
+\end{verbatim}
+
+The typenames ``EnsemReal'' are a typedef for a tensor product of possible
+types. These can be found in the definitions file
+\begin{verbatim}
+adat/include/ensem/ensem_scalarsite_defs.h
+\end{verbatim}
+Possible types include ensembles and scalar types, observables that are
+scalar, vectors or tensors (there is a general tensor manipulation package
+including fully anti-symmetric tensors), spin and color matrices, random
+number seeds, and real, complex, integers, or booleans.
+
+\section{Three-Point Functions}
+\subsection{Management}\label{sec:manage}
+A three-point correlator typically has the form
+``EnsemVectorComplexF'' where we often keep the data in single
+precision. In a typical form-factor measurement, there could be tens
+or even hundreds of these correlators needed. Adat provides a {\bf
+Manage3PtFunc} (abstract) base class in 
+\begin{verbatim}
+adat/include/formfac/formfac_manage_3pt.h
+\end{verbatim} 
+This class provides a
+semantics of the C++ {\bf map} class, namely a container of
+``key,value'' pairs, where key is of type {\bf ThreePtArg}. Here, the
+key holds the source and sink state 3-vector momentum, the gamma
+matrix insertion, and the gauge link insertions. The source and sink
+can be additional parameterized by indices corresponding to the
+polarization of the state, or in the case of baryon sinks, the ``u''
+or ``d'' quark type. The value is a structure that holds a
+``EnsemVectorComplexF'', along with some other bit of auxilliary info
+indicating how often this correlator has been used, etc.
+
+The {\bf Manage3PtFunc} is an abstract base class that provides an 
+indexing function like
+\begin{verbatim}
+    //! Return a 3-pt object
+    virtual EnsemVectorComplexF operator[](const ThreePtArg& arg);
+\end{verbatim}
+Namely, when a ThreePtArg is given, a three-point correlator is returned.
+Disk activity maybe involved in a derived (implementation) class.
+
+\subsection{Parton distribution library}
+
+Dru Renner's parton distribution library has been incorporated into {\bf adat}.
+The functions use this Manage class. An example of a prototype is as follows:
+\begin{verbatim}
+  EnsemVectorComplexF UBar_Gamma_DD_U(Manage3PtFunc& threept, const PiPf& pi_pf, 
+                                      int gamma, int mu2, int mu1);
+\end{verbatim}
+This routine takes a three-point manager base class, and a structure holding the
+initial and final momentum $p_i$ and $p_f$. The gamma (from 0 to 15), and the
+directions are also passed.
+
+\subsection{Cache management abstract class}
+
+When a ThreePtArg is accessed, quite likely there is some disk access
+involved which can be slow. To optimize performance, these three-pt
+correlators can be held in some internal ``cache'', so that if the
+same correlator is accessed again, there is not performance penalty.
+This is the job of a derived abstract class that provides 
+a ``cache manager'', and is called {\bf Manage3PtFuncCache}.
+There are additional functions in the {\bf Cache} class 
+like ``exist'' to check if a particular
+key actually exists, ``erase'' to erase a key, ``insert'' to put in
+new correlators, and ``mark'' to indicate a key really should be kept
+and not discarded later.
+
+The constructor for a for this manage class is
+\begin{verbatim}
+//! Constructor
+Manage3PtFuncCache(const std::string& cache_file_, 
+                   int max_map_megabytes_);
+\end{verbatim}
+where the ``cache\_file'' is the name of a cache file on disk. The
+``max\_map\_megabytes'' is the rough size in megabytes that the cache
+file should consume in memory.  Upon construction, this cache file is
+read if it exists. At destructor time for the manage object, the cache
+file is updated on disk (written if it did not exist before). 
+
+The form of the cache file is the SciDAC {\bf LIME} format described
+in the LIME documentation that can found at
+{\tt http://usqcd.jlab.org/usqcd-docs/c-lime}. This format is used for
+SciDAC and also ILDG format gauge fields, and also propagators. As such,
+it is an international standard. It is a simple multi-record format file
+interface. Each ensemble object is written in two records - the first is
+a very short xml image of the ``key'' above, and the second records
+is the corresponding ensemble binary object. The lime file contents can
+be displayed with the program ``lime\_contents'' that is in the LIME package.
+
+An example of a what a cache file looks like is shown below. This is the
+part of the output from the program
+\begin{verbatim}
+adat/main/formfac/build\_cache.cc
+\end{verbatim}
+The data set is the proton-proton system for DWF over DWF.
+\begin{verbatim}
+Message:        1
+Record:         6
+Type:           XML Header
+Data Length:    192
+Padding Length: 0
+MB flag:        0
+ME flag:        0
+Data:           "<?xml version="1.0"?>
+
+
+<ThreePtArg>
+  <PiPf>
+    <p_f>0 0 0</p_f>
+    <p_i>1 0 0</p_i>
+    <q_sq>1</q_sq>
+  </PiPf>
+  <g>3</g>
+  <links>4</links>
+  <src>0</src>
+  <snk>1</snk>
+</ThreePtArg>
+" 
+
+
+Message:        1
+Record:         7
+Type:           Ensemble
+Data Length:    1536
+Padding Length: 0
+MB flag:        0
+ME flag:        0
+Data:           [Binary data]
+\end{verbatim}
+%
+One can see the {\bf ThreePtArg} (the key) that was used. Here, the
+sink momentum is $p_f=(0,0,0)$ and the source momentum is
+$p_i=(0,0,0)$. The gamma matrix at the insertion is $\Gamma=3$ where
+this index goes from 0 to 15 and enumerates all the possible 16 gamma
+matrices for four spin components. The link path is $l=4$ which is
+just a single link in the $-x$ direction. The ``D'' quark contribution
+is used corresponding to ``snk=1''.
+
+\subsection{Implementations}
+
+The {\bf Manage3PtFuncCache} abstract base class relies on a derived
+class to implement the function {\bf do\_read3pt()} that reads the
+actual three-point functions for a specific data-file format. There
+are currently 3 such classes. In all cases, the ability to read the
+three-point functions is used in conjunction with the cache manager.
+
+In an attempt to abstract out the details of how the three-point functions
+are stored on disk, all the implementations rely on the user providing
+a {\bf State3PtFunc} object. The sole function in this class is a
+\begin{verbatim}
+//! Construct 3pt names
+std::string operator()(int cfg, const ThreePtArg& arg) const;
+\end{verbatim}
+call-back function. This function is given the key and the
+configuration number, and returns the filename for the three-point
+function. This is used by the {\bf do\_read3pt()} called by the base
+class and implemented in this derived class. It is expected that this
+function may change for 3-pt functions stored in different directory
+conventions, etc.
+
+The simplest is the {\bf Manage3PtFuncCacheStripped}
+which reads ascii ensemble files that might have been produced by 
+{\tt adat/main/strippers/strip\_buildingblocks.cc}. This latter code
+will read a collection of Building-Block files and ``invert'' them into
+ensemble format. While these files have already been inverted, the manage
+class is possibly optimizing away repetitive reads of these files from
+disk by holding them in memory.
+
+The second implementation is the main one in use - the 
+{\bf Manage3PtFuncCacheBB} class that reads BuildingBlock files directly.
+Each building-block file corresponds to one configuration, and possibly
+one insertion momentum, but always one sink momentum. There are always
+a multiple of 16 gamma matrix insertions for each of (1) no link insertions,
+(2) 1-link insertions, (3) 2-link insertions, etc. The current implementation
+of the {\bf do\_read3pt()} will read in the entire contents of a single
+building block file and hold it in the cache manager. This occurs when
+the {\tt operator[](ThreePtArg)} function is called. The desired
+object is marked as used, while the remainders are mark as not used.
+If a subsequent {\tt operator[]()} function is called using one of these
+read objects, there will be no additional disk access, thus improving
+performance. This gain can be significant, but it comes at a price of
+holding some potentially unused correlators in memory. These can be
+removed by calling the base class {\tt eraseUnused()} function.
+
+The final implementation is in a state of flux - namely, the 
+{\bf Manage3PtFuncCacheDB} class. It is a ``database'' class that is used for
+experimental methods to store 3-pt correlators.
+
+\section{Cache Builder - A Preprocessor to Thin 3-Pt Correlator Data-Sets}
+
+The data-set sizes of a typical 3-pt function analysis can be
+huge. While the Manage class can help optimize reads of the data-set
+by holding them in memory thus avoiding repetitive reads, this
+strategy has limitations.  Namely, the bigger issue is that the data
+analysis needs all its correlators ``inverted'' where we have one
+quantum number for a collection of configurations. The Manage class
+can be thought of as providing this inversion on the fly for
+applications such as a 3-pt fitter described in
+Section~\ref{sec:llsq}.  
+
+An alternative strategy is to just invert the data-set up front by
+selecting the quantum numbers that will be needed.  The Manage class
+can be used in this role where a cache file is to be written. The
+subsequent fitter uses this cache file, and never actually tries to
+access the raw data directly. The program {\tt
+adat/main/formfac/build\_cache.cc} provides this functionality. It
+takes as input a list of the desired keys that are described in
+Section~\ref{sec:manage}, along with a pattern of how to access the
+3-pt functions on disk. This current code is implemented for reading
+BuildingBlock files using {\bf Manage3PtFuncCacheBB}. There is a class {\bf
+LocalPtFunc} that implements a {\bf State3PtFunc} object. This object provides
+the call-back to find the 3-pt functions, and might have to change for files
+arranged in some unexpected/different directory structure.
+
+An example of input is given for the LHPC DWF/DWF proton-proton form-factor
+measurements. Directory paths are shown
+\begin{verbatim}
+<BuildCache>
+<annotation>
+Input file for building a 3-pt cache file. The input here is
+appropriate for the DWF/DWF test data.
+
+Names are like
+ProtonU3Pts_2links_t10z12y12x12_t19pz+0py+0px-1_qz-3qy+0qx-1
+</annotation>
+
+ <ThreePt>
+   <State>
+     <!-- Key for this particular state handler -->
+     <StateId>LOCAL_BB</StateId>
+     <!-- pattern of location on disk -->
+     <pattern>/work/HASTE/LHPC/NF3/first_100/2+1f_24nt64_IWASAKI_b2.13_ls16_M1.8_ms0.04_mu0.005_rhmc_H_R_G/Proton/%d/Proton%c3Pts_2links_t10z12y12x12_t19pz%c%1dpy%c%1dpx%c%1d_qz%c%1dqy%c%1dqx%c%1d</pattern>
+   </State>
+   <!-- Key for this particular 3-pt handler -->
+   <ThreePtId>THREEPT_CACHE_BB</ThreePtId>
+   <!-- file holding list of directories to be used -->
+   <cfg_file>/work/HASTE/LHPC/NF3/first_100/2+1f_24nt64_IWASAKI_b2.13_ls16_M1.8_ms0.04_mu0.005_rhmc_H_R_G/Proton/cfg_list.short</cfg_file>
+   <!-- cache file location -->
+   <cache_file>proton_cache.lime</cache_file>
+   <!-- size in memory -->
+   <max_map_mb>500</max_map_mb>
+   <!-- Lattice parameters -->
+   <LatticeParam>
+     <latt_size>24 24 24 64</latt_size>
+     <decay_dir>3</decay_dir>
+     <a_fm>0.09</a_fm>
+   </LatticeParam>
+ </ThreePt>
+ <Keys>
+   <!-- first key -->
+   <elem>
+     <PiPf>
+       <p_f>0 0 0</p_f>
+       <p_i>0 0 0</p_i>
+       <q_sq>0</q_sq>
+     </PiPf>
+     <g>0</g>
+     <links></links>
+     <src>0</src>
+     <snk>0</snk>
+   </elem>
+   <!-- second key -->
+   <elem>
+     <PiPf>
+       <p_f>0 0 0</p_f>
+       <p_i>0 0 0</p_i>
+       <q_sq>0</q_sq>
+     </PiPf>
+     <g>7</g>
+     <links>1 2</links>
+     <src>0</src>
+     <snk>0</snk>
+   </elem>
+   <!-- third key -->
+   <elem>
+     <PiPf>
+       <p_f>0 0 0</p_f>
+       <p_i>1 0 0</p_i>
+       <q_sq>1</q_sq>
+     </PiPf>
+     <g>3</g>
+     <links>4</links>
+     <src>0</src>
+     <snk>1</snk>
+   </elem>
+ </Keys>
+</BuildCache>
+\end{verbatim}
+
+\section{Building-Block Thinner}
+Another utility code is {\bf adat/main/formfac/thin\_bb.cc}. This code takes
+a standard building file (not over configurations), and upon command line
+selection, it will ``thin'' out link insertions. It is invoked via
+\begin{verbatim}
+thin_bb  <desired max links>  <input BB file>  <output BB file>
+\end{verbatim}
+It the BB file contains 3-link insertions, it can be thinned down to
+a 2-link insertion file by discarding the third link. NOTE: this is a non-trivial
+operation on a file since the links are buried recursively within a file and
+there are the 16 gamma matix insertions as well.
+
+\section{Linear Least Squares Fitting Class}\label{sec:llsq}
+
+\subsection{Current versions}
+Adat provides a class structure and functions for solving the
+over-constrained system of equations (via SVD or Linear-Least Squares)
+that is common in form-factor fits. The linear least-square solver
+\begin{verbatim}
+// Prototypes
+//! Linear least squares for real systems
+LLSqResults llsq(EnsemVectorReal& x, EnsemReal& chisq, const LLSqComponent<EnsemReal>& sys);
+
+//! Linear least squares for complex systems
+LLSqResults llsq(EnsemVectorComplex& x, EnsemReal& chisq, const LLSqComponent<EnsemComplex>& sys);
+\end{verbatim}
+where the returned solutions (formfactors) are contained in ``x''. The ``sys''
+object is of type ``LLSqComponent'' that provide a ``mat'' and a ``rhs''
+class. The semantics of the ``llsq'' functions is to solve an over-constrained
+system like
+\begin{equation}
+K \times F = \Gamma^{(3)}
+\end{equation}
+where the kinematic factors $K$ is the matrix, and the right-hand side
+(rhs) corresponds to the 3-pt functions (and possibly 2-pt functions
+as well). The form-factors $F$ are the solution vectors. For example,
+for the nucleon-nucleon system, there are two electromagnetic
+form-factors $F_1$ and $F_2$. So, the size of $F$ will be two
+``EnsemReal''. The kinematic matrix has two columns, but could have
+many rows corresponding to how many combinations of momenta are taking
+part, how many time slices (could be an individual time-slice), and
+also how many Lorentz indices. There could be more indices.
+
+The {\bf ff\_driver} function in {\tt adat/main/formfac/ff\_driver.cc}
+implements the loop over $Q^2$. A complete example is {\tt
+adat/main/formfac/nucleon\_ff.cc} which implements the nucleon
+electromagnetic form-factors.
+
+The code can currently support (in a klunky fashion) excited state
+form-factor fits. The strategy is to use the wave-function overlaps
+for the ground-state and excited-states along with there respective
+energies in the construction of the kinematic matrix. The right-hand
+side is solely the 3-pt functions.  This strategy is referred to as
+the ``fit method''.
+
+An alternative form is labelled as the ``ratio method'' where the
+right-hand side is composed of 
+\begin{equation}
+\frac{\Gamma^{(3)}_{SS}(p_i,p_f,t)*\Gamma^{(2)}_{SP}(p_f,t)}{\Gamma^{(2)}_{SP}(p_i,t)*\Gamma^{(2)}_{SS}(p_f,t_f)}
+\end{equation}
+
+\subsection{Future directions}
+There are too many separate form-factor codes corresponding to different source
+and sink states. A near term change is to automate the kinematic construction
+where an {\bf operator} for the source and sink is given, and this object
+will return the possible states that can be overlapped described by a {\bf wavefunction}
+object. In Minkowski space, the contraction of wavefunction overlaps can be automated
+for generic spin-$L$ polarization vectors for a meson and a generic spin-$S$ fermion vector
+all using the Rarita-Schwinger construction. Parts of this new program are implemented
+and have been used in meson spectroscopy. For the curious, one can see
+{\bf adat/main/formfac/operators.\*} and {\bf adat/main/formfac/wavefuncs.\*}.
+A very rough start of the fitting code is in {\bf adat/main/formfac/meson\_fit.cc}.
+
+
+\appendix
+
+\section{Jackknife}\label{sec:jackknife}
+
+Given some statistical sample $y_i$ the mean and variance are
+\begin{eqnarray}
+\bar{y} &=& \frac{1}{N}\sum_i^N y_i\\
+{\rm var}(y) &=& \frac{1}{N}\sum_i^N \left(y_i - \bar{y}\right)^2\label{var}
+\end{eqnarray}
+The jackknife prescription for error propagation states that one first
+takes the observable $y_i$ in {\em raw} (also called {\em ensemble})
+data format and convert it {\em jackknife} format via
+\begin{eqnarray}
+y_i' &=& \frac{1}{N-1}\sum_{j\ne i}^N y_j \\
+     &=& \bar{y} + \left(y_i - \bar{y}\right) \frac{1}{f} \label{jack}
+\end{eqnarray}
+where $f=-(N-1)$. One sees that the fluctuations of the observable
+are scaled down by the factor $f$. One then uses the observables in some
+linear or nonlinear function, and then rescales the fluctuations up to raw
+format. So, one does
+\begin{eqnarray}
+z_i' &=& g(y_i',x_i',...)\label{nonlinear}\\
+z_i  &=& \bar{z} + \left(z_i' - \bar{z}\right) f \quad.
+\end{eqnarray}
+The sample variance of $z$ is computed via the conventional method given 
+by Eq.~\ref{var}.
+
+\section{Bootstrap}\label{sec:bootstrap}
+
+The bootstrap prescription is similar to jackknife in Eq.~\ref{jack},
+except now the rescaling factor $f=\sqrt{N-1}$, and the selection of
+the bins $i$ are chosen randomly out of the set of $N$ samples. The
+total length of the bootstrap sample (say $M$) can in factor be
+greater than $N$.  Otherwise, the operation sequence of rescaling of
+the fluctuations down, nonlinear operation, rescaling the fluctuations
+up are the same as in jackknife.
+
+\section{Ascii disk format for Ensembles used by Ensbc}
+\label{sec:ascii_format}
+
+Ensemble files used by the program {\bf Ensbc} are in ascii format
+containing at least one ``quantum number''. This format is written by
+Adat's ensemble {\bf read} and {\bf write} functions.
+The format is
+\begin{verbatim}
+<#correlators> <time extent> <type = 0,1> <spatial extent> <number of columns>
+0 <real or complex number at slice 0>  [... <real or complex number>]   // config 1
+1 <real or complex number at slice 1>  [... <real or complex number>]
+...
+N-1 <real or complex number at slice N-1>  [.... ]
+0 <real or complex number at slice 0>  [... <real or complex number>]   // config 2
+1 <real or complex number at slice 1>  [... <real or complex number>]
+...
+N-1 <real or complex number at slice N-1>  [.... ]
+...
+\end{verbatim}
+The {\rm type=0} designates {\rm real} and {\rm type=1} is {\rm complex}.
+
+For example, a single complex observable with time extent 2, three correlators
+and spatial extent 4 might look like
+\begin{verbatim}
+3 2 1 4 1
+0  5.18 3.5
+1  1.2  8.0
+0  5.17 3.49
+1  1.21 8.1
+0  5.19 3.51
+1  1.21 8.05
+\end{verbatim}
+
+\section{Ensbc}\label{seq:ensbc}
+
+The function $g$ in Eq.~\ref{nonlinear} above can be quite involved
+(maybe one's entire code except for the variances). However, the
+jackknife sequence of operations can be broken down into basic
+operations like, {\tt operator+}, {\tt operator-}, {\tt operator*},
+{\tt operator/}, {\tt log}, {\tt sqrt}, etc. The package {\tt ensbc}
+available from {\tt http://www.usqcd.org/usqcd-docs/ensbc} provides
+a binary calculator that works on files in {\em ensemble} format. 
+
+For example, say there are compatible ensemble files named ``a'', ``b'',
+and ``c''. Then, one can do
+\begin{verbatim}
+% ensbc
+d = a + b*c^3
+e = b / c
+f = sqrt(d*a) / log(e)
+calc(f)
+\end{verbatim}
+%
+The files ``d'', ``e'', and ``f'' will be written to disk in ensemble format
+with the means and variance propagated via the jackknife prescription in
+the individual operations like {\tt operator*}, etc. The parser for the
+binary calculator is fully general - any complicated expression that can
+be written on a single line can be used. The results of ``calc(f)'' will print
+the time slice, the mean, the standard error, and for convenience the error/mean
+(noise to signal ratio).
+
+\end{document}

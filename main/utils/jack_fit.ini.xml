@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<param_db>
+<name>pion</name>
+<ensem_out>pion_mass.ens</ensem_out>
+<filename>tt.SS</filename>
+<fit>
+ <fitfunc>Exponentials</fitfunc>
+     <min_dist>2</min_dist>
+     <max_dist>15</max_dist>
+     <fit_params>1 0.2</fit_params>
+     <mass_param>1</mass_param>
+</fit>
+</param_db>
+

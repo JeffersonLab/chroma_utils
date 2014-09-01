@@ -1,0 +1,80 @@
+\documentclass[12pt]{article}
+\begin{document}
+
+\begin{center}
+\bf Sizes of Building Block Files\\
+Dru Renner\\
+June 20, 2007
+\end{center}
+
+
+The exact formula for the size of a building block file is given below, but
+first, here is a more useful and accurate upper bound.
+In this approximation, the size of the building block file depends on the number of link patterns,
+$N_\mathrm{L}$, the maximum length of the link patterns, $l_{\mathrm{max}}$,
+the number of momentum transfers, $N_{\mathrm{Q}}$, and
+the number of time slices, $N_{\mathrm{T}}$, included in the file.
+Here is the upper bound on the size, $\mathrm{S}$, of a building block file for version 3.
+%
+\begin{displaymath}
+\mathrm{S} \le 104 + N_{\mathrm{L}} \left\{ 2(1+l_{\mathrm{max}}) + N_{\mathrm{Q}} 16 ( 6 + 8 N_{\mathrm{T}} ) \right\}
+\end{displaymath}
+%
+To illustrate the formula, consider our current calculations with $N_{\mathrm{T}} = 64$ and
+one momentum transfer per file, $N_{\mathrm{Q}} = 1$.  For the $\vec{p}=0$ sink we have
+$N_{\mathrm{L}} = 65$ and for the $\vec{p}\not=0$ sink we have $N_{\mathrm{L}} = 457$.  The
+corresponding upper bounds are 539214 and 3791376.  You can compare these with the exact
+sizes of 539194 and 3791226 respectively.
+
+The above result is probably the most useful formula, but to be precise here is the exact
+formula.  You must determine the number of link patterns of length $l$, $N_{\mathrm{L}}^l$.
+Then the exact formula is
+%
+\begin{displaymath}
+\mathrm{S} = 104 + \sum_l N_{\mathrm{L}}^l \left\{ 2(1+l) + N_{\mathrm{Q}} 16 ( 6 + 8 N_{\mathrm{T}} ) \right\}
+\end{displaymath}
+%
+You can easily check that the previous result is indeed a valid upper bound.
+
+If you keep all link patterns of a fixed size, then there is a formula for the number
+of link patterns, $N^l$, of length $l$.  For $l=0$ we have
+$N^{{}_0}=1$ and $N^l=8\cdot 7^{l-1}$ for $l>0$.
+The first few are given here, along with the cumulative count, for ease of reference.
+%
+\begin{displaymath}
+\begin{array}{|c|c|c|}\hline
+l & N^l & \sum_{m=0}^l N^m\\\hline
+0 &    1 & 1    \\
+1 &    8 & 9    \\
+2 &   56 & 65   \\
+3 &  392 & 457  \\
+4 & 2744 & 3201 \\\hline
+\end{array}
+\end{displaymath}
+
+I don't have a simple formula for the momentum transfers, but you can easily count.  Here
+are the first few cases where $N$ is the number of equivalent $\vec{q}$ for the given case
+and $C$ is the cumulative count.
+%
+\begin{displaymath}
+\begin{array}{|c|c|c|c|}\hline
+q^2 & \mathrm{ex.}~\vec{q} & N  & C   \\\hline
+0   & (0,0,0)              & 1  & 1   \\
+1   & (1,0,0)              & 6  & 7   \\
+2   & (1,1,0)              & 12 & 19  \\
+3   & (1,1,1)              & 8  & 27  \\
+4   & (2,0,0)              & 6  & 33  \\
+5   & (2,1,0)              & 24 & 57  \\
+6   & (2,1,1)              & 24 & 81  \\
+8   & (2,2,0)              & 12 & 93  \\
+9   & (2,2,1)              & 24 & 117 \\
+12  & (2,2,2)              &  8 & 124 \\\hline
+\end{array}
+\end{displaymath}
+
+
+I should note that I have not actually seen a building block file from chroma with
+$N_{\mathrm{Q}} \not= 1$, so I am guessing about the $N_{\mathrm{Q}}$ dependence.  This
+note might need to be modified to correct for that.
+
+\end{document}

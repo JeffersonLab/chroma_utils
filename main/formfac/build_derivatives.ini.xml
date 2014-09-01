@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<BuildCache>
+<annotation>
+Input file for building a 3-pt cache file. The input here is
+appropriate for the DWF/DWF test data.
+
+Names are like
+ProtonU3Pts_2links_t10z12y12x12_t19pz+0py+0px-1_qz-3qy+0qx-1
+</annotation>
+
+ <ThreePt>
+   <State>
+     <StateId>LOCAL_BB</StateId>
+     <pattern>/work/HASTE/LHPC/NF3/first_100/2+1f_24nt64_IWASAKI_b2.13_ls16_M1.8_ms0.04_mu0.005_rhmc_H_R_G/Proton/%d/Proton%c3Pts_2links_t10z12y12x12_t19pz%c%1dpy%c%1dpx%c%1d_qz%c%1dqy%c%1dqx%c%1d</pattern>
+   </State>
+   <ThreePtId>THREEPT_CACHE_BB</ThreePtId>
+   <cfg_file>/work/HASTE/LHPC/NF3/first_100/2+1f_24nt64_IWASAKI_b2.13_ls16_M1.8_ms0.04_mu0.005_rhmc_H_R_G/Proton/cfg_list.short</cfg_file>
+   <cache_file>proton_cache.lime</cache_file>
+   <max_map_mb>500</max_map_mb>
+   <LatticeParam>
+     <latt_size>24 24 24 64</latt_size>
+     <decay_dir>3</decay_dir>
+     <a_fm>0.09</a_fm>
+   </LatticeParam>
+ </ThreePt>
+ <PiPf>
+   <elem>
+     <p_f>0 0 0</p_f>
+     <p_i>0 0 0</p_i>
+   </elem>
+   <elem>
+     <p_f>0 0 0</p_f>
+     <p_i>1 0 0</p_i>
+   </elem>
+ </PiPf>
+ <output_file>derivative.lime</output_file>
+</BuildCache>

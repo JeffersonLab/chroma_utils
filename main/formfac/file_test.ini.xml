@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<FileTest>
+<annotation>
+; $Id: file_test.ini.xml,v 2.0 2008/12/05 04:43:48 edwards Exp $
+;
+; Input file for file_test program
+</annotation>
+
+ <LatticeParam>
+   <nrow>12 12 12 48</nrow>
+   <j_decay>3</j_decay>
+   <a_fm>0.1</a_fm>
+   <AnisoParam>
+     <anisoP>true</anisoP>
+     <xi>3.0</xi>
+     <c_sq>1.04</c_sq>
+   </AnisoParam>
+ </LatticeParam>
+
+ <tol>1.0e-5</tol>
+ <mom2_max>5</mom2_max>
+ <mass_string>D401</mass_string>
+ <source_smear>DG3</source_smear>
+ <sink_smear>P</sink_smear>
+
+</FileTest>

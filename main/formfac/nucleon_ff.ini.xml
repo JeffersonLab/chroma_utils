@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+
+<NucleonFF>
+<annotation>
+; $Id: nucleon_ff.ini.xml,v 2.0 2008/12/05 04:43:48 edwards Exp $
+;
+; Input file for proton FF
+</annotation>
+
+ <ThreePt>
+   <pattern>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/building_blocks.v2/%d/ProtonSmear%c3Pts_pz%c%1dpy%c%1dpx%c%1d_qz%c%1dqy%c%1dqx%c%1d</pattern>
+   <cfg_file>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/stripped/cfg_list</cfg_file>
+   <cache_file>proton_cache.lime</cache_file>
+   <max_map_megabytes>500</max_map_megabytes>
+ </ThreePt>
+ <TwoPt>
+   <pattern_SP>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/stripped/%s.D478.DG4p35_3.P_3.SP</pattern_SP>
+   <pattern_SS>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/stripped/%s.D478.DG4p35_3.DG4p35_3.SS</pattern_SS>
+   <avg_2pt_func>true</avg_2pt_func>
+ </TwoPt>
+ <Energy>
+   <pattern>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/stripped/mass_0.%s.D478.jack</pattern>
+ </Energy>
+ <Z_V_file_name>/cache/HASTE/NF2/asqtad/MILC_2064f21b681m030m050/20^3x32/ls_16/stripped/Z_V.D478.jack</Z_V_file_name>
+ <qsq_file_name>proton_ff.qsq.dat</qsq_file_name>
+ <LatticeParam>
+   <nrow>20 20 20 32</nrow>
+   <j_decay>3</j_decay>
+   <a_fm>0.125</a_fm>
+   <AnisoParam>
+     <anisoP>false</anisoP>
+     <xi>1.0</xi>
+     <c_sq>1.0</c_sq>
+   </AnisoParam>
+ </LatticeParam>
+
+ <t_source>10</t_source>
+ <t_sink>20</t_sink>
+
+ <MomentumRange>
+   <mom2_max>2</mom2_max>
+   <sink_mom>
+     <elem>0 0 0</elem>
+   </sink_mom>
+ </MomentumRange>
+ 
+ <!-- FixedMomentum>
+   <PiPf>
+     <elem>
+       <p_f>0 0 0</p_f>
+       <p_i>1 0 0</p_i>
+     </elem>
+   </PiPf>
+ </FixedMomentum -->
+ 
+ <fit_range>
+<annotation>
+   <elem>10 10</elem>
+   <elem>11 11</elem>
+   <elem>12 12</elem>
+   <elem>13 13</elem>
+   <elem>14 14</elem>
+   <elem>15 15</elem>
+   <elem>16 16</elem>
+   <elem>17 17</elem>
+   <elem>18 18</elem>
+   <elem>19 19</elem>
+   <elem>20 20</elem>
+   <elem>21 21</elem>
+</annotation>
+   <elem>14 16</elem>
+<annotation>
+</annotation>
+ </fit_range>
+</NucleonFF>

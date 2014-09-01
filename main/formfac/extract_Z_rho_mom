@@ -1,0 +1,47 @@
+#!/bin/tcsh
+
+set s = $1
+set k = $2
+set L = $3
+set xi = 3
+
+foreach m (0 1)
+
+set mass = mass_${m}.${s}.${k}.jack
+
+if (-f Z_${m}.${s}.${k}.jack) then
+  echo "Z_${m}.${s}.${k}.jack = Z_${m}.${s}.${k}.jack / sqrt(1)"
+  ensbc "Z_${m}.${s}.${k}.jack = Z_${m}.${s}.${k}.jack / sqrt(1)"
+endif
+
+if (-f Z_${m}.${s}_px1_py0_pz0.${k}.jack) then
+  echo "Z_${m}.${s}_px1_py0_pz0.${k}.jack = Z_${m}.${s}_px1_py0_pz0.${k}.jack / sqrt(1 + 1*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px1_py0_pz0.${k}.jack = Z_${m}.${s}_px1_py0_pz0.${k}.jack / sqrt(1 + 1*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+if (-f Z_${m}.${s}_px1_py1_pz0.${k}.jack) then
+  echo "Z_${m}.${s}_px1_py1_pz0.${k}.jack = Z_${m}.${s}_px1_py1_pz0.${k}.jack / sqrt(1 + 2*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px1_py1_pz0.${k}.jack = Z_${m}.${s}_px1_py1_pz0.${k}.jack / sqrt(1 + 2*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+if (-f Z_${m}.${s}_px1_py1_pz1.${k}.jack) then
+  echo "Z_${m}.${s}_px1_py1_pz1.${k}.jack = Z_${m}.${s}_px1_py1_pz1.${k}.jack / sqrt(1 + 3*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px1_py1_pz1.${k}.jack = Z_${m}.${s}_px1_py1_pz1.${k}.jack / sqrt(1 + 3*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+if (-f Z_${m}.${s}_px2_py0_pz0.${k}.jack) then
+  echo "Z_${m}.${s}_px2_py0_pz0.${k}.jack = Z_${m}.${s}_px2_py0_pz0.${k}.jack / sqrt(1 + 4*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px2_py0_pz0.${k}.jack = Z_${m}.${s}_px2_py0_pz0.${k}.jack / sqrt(1 + 4*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+if (-f Z_${m}.${s}_px2_py1_pz0.${k}.jack) then
+  echo "Z_${m}.${s}_px2_py1_pz0.${k}.jack = Z_${m}.${s}_px2_py1_pz0.${k}.jack / sqrt(1 + 5*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px2_py1_pz0.${k}.jack = Z_${m}.${s}_px2_py1_pz0.${k}.jack / sqrt(1 + 5*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+if (-f Z_${m}.${s}_px2_py1_pz1.${k}.jack) then
+  echo "Z_${m}.${s}_px2_py1_pz1.${k}.jack = Z_${m}.${s}_px2_py1_pz1.${k}.jack / sqrt(1 + 6*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+  ensbc "Z_${m}.${s}_px2_py1_pz1.${k}.jack = Z_${m}.${s}_px2_py1_pz1.${k}.jack / sqrt(1 + 6*(2*3.14159/${L})^2/(sqrt(3)*${xi} * ${mass})^2)"
+endif
+
+end
