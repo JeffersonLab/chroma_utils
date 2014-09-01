@@ -1,0 +1,3 @@
+Some support routines for manipulating files from chroma.
+Includes "strippers" that extract data (ensemble) files from various
+Chroma output files. Also contains some fitters.
