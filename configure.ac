@@ -2,6 +2,9 @@ AC_INIT(chroma_utils,1.0,edwards@jlab.org)
 
 AC_CONFIG_AUX_DIR(config)
 
+AM_INIT_AUTOMAKE([subdir-objects])
+
+
 AC_LANG_CPLUSPLUS
 AC_PROG_CXX(g++ cxx CC)
 AC_PROG_CC(gcc cc)

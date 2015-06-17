@@ -30,7 +30,7 @@ HDRS=
 ##   Another option is to add it to check_PROGRAMS, which means it will only
 ##   be built by 'make check' and is not installed.
 #check_PROGRAMS = 
-bin_PROGRAMS = merge_proplists merge_cproplists  average_proplist concat_and_scale_proplist concat_proplist fold shift_corrfunc jack_ratio time_reverse block_proplist eff_mass jack_corrfunc_ratio plot_prop average_cproplist cfold jack_fit jack_ratio2 chop_proplist
+bin_PROGRAMS = merge_proplists merge_cproplists  average_proplist concat_and_scale_proplist concat_proplist fold shift_corrfunc jack_ratio time_reverse block_proplist eff_mass jack_corrfunc_ratio plot_prop average_cproplist cfold jack_fit jack_ratio2 chop_proplist eff_ampl
 
 
 #
@@ -67,6 +67,12 @@ plot_prop_DEPENDENCIES = build_lib
 eff_mass_SOURCES =  eff_mass.cc
 eff_mass_CPPFLAGS =  
 eff_mass_DEPENDENCIES = build_lib
+
+
+eff_ampl_SOURCES =  eff_ampl.cc
+eff_ampl_CPPFLAGS =  
+eff_ampl_DEPENDENCIES = build_lib
+
 
 time_reverse_SOURCES =  time_reverse.cc
 time_reverse_CPPFLAGS =  
