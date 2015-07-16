@@ -36,7 +36,7 @@
 
 namespace CovFit {
 
-  use namespace std; 
+  using namespace std; 
 
 /* From Numerical Recipes:  */
 /*! To get confidence: gammq( 0.5*dof , 0.5*chisq ) */

@@ -34,7 +34,7 @@
 
 namespace CovFit {
 
-  use namespace std ;
+  using namespace std ;
 
 /*! sets the covariance matrix. checks the limits xmin,xmax */
 void coFitter::SetCovarMat(CovarMat& CM){
@@ -314,7 +314,7 @@ void coFitter::Fit(){
       epar[i] = sqrt( (double)nblocks/(nblocks-ndata) * wparmat1[i*npar+i]) ;
       double err = sqrt((double)nblocks/(nblocks-ndata)*2.0*delpar[i*npar+i]) ;
       printf("par[%d] = %e  +-  %e \t%e\n",i,par[i],err,epar[i]);
-      if(isnan(err)||isnan(epar[i]))
+      if(std::isnan(err)||std::isnan(epar[i]))
 	fit_failed=true ;
       else
 	fit_failed=false ;
