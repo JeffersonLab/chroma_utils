@@ -34,6 +34,8 @@
 
 namespace CovFit {
 
+  use namespace std ;
+
 /*! sets the covariance matrix. checks the limits xmin,xmax */
 void coFitter::SetCovarMat(CovarMat& CM){
 

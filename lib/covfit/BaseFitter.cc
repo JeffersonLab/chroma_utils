@@ -36,6 +36,8 @@
 
 namespace CovFit {
 
+  use namespace std; 
+
 /* From Numerical Recipes:  */
 /*! To get confidence: gammq( 0.5*dof , 0.5*chisq ) */
 double BaseFitter::gammq(double a, double x)
