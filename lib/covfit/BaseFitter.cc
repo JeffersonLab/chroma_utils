@@ -36,6 +36,8 @@
 
 namespace CovFit {
 
+  using namespace std; 
+
 /* From Numerical Recipes:  */
 /*! To get confidence: gammq( 0.5*dof , 0.5*chisq ) */
 double BaseFitter::gammq(double a, double x)
@@ -446,7 +448,7 @@ printf("min: phi(xnew): %g\n",phi(xnew));
  
  kno_tmp = phi(xnew) ;
  kno_flag = 0 ;
- while( isnan(kno_tmp) || isinf(kno_tmp) ){ 
+ while( std::isnan(kno_tmp) || std::isinf(kno_tmp) ){ 
    /*take a smaller step*/
    /* we probably hit a very large argument for an exponential */
    printf("min: OOPS! We hit infinity or NaN in function evaluation. ") ;
