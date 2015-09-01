@@ -93,7 +93,8 @@ bin_PROGRAMS = merge_proplists$(EXEEXT) merge_cproplists$(EXEEXT) \
 	block_proplist$(EXEEXT) eff_mass$(EXEEXT) \
 	jack_corrfunc_ratio$(EXEEXT) plot_prop$(EXEEXT) \
 	average_cproplist$(EXEEXT) cfold$(EXEEXT) jack_fit$(EXEEXT) \
-	jack_ratio2$(EXEEXT) chop_proplist$(EXEEXT) eff_ampl$(EXEEXT)
+	jack_ratio2$(EXEEXT) chop_proplist$(EXEEXT) eff_ampl$(EXEEXT) \
+	concat_cproplist$(EXEEXT)
 subdir = main/utils
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -128,6 +129,10 @@ am_concat_and_scale_proplist_OBJECTS =  \
 concat_and_scale_proplist_OBJECTS =  \
 	$(am_concat_and_scale_proplist_OBJECTS)
 concat_and_scale_proplist_LDADD = $(LDADD)
+am_concat_cproplist_OBJECTS =  \
+	concat_cproplist-concat_cproplist.$(OBJEXT)
+concat_cproplist_OBJECTS = $(am_concat_cproplist_OBJECTS)
+concat_cproplist_LDADD = $(LDADD)
 am_concat_proplist_OBJECTS =  \
 	concat_proplist-concat_proplist.$(OBJEXT)
 concat_proplist_OBJECTS = $(am_concat_proplist_OBJECTS)
@@ -207,8 +212,8 @@ am__v_CXXLD_1 =
 SOURCES = $(average_cproplist_SOURCES) $(average_proplist_SOURCES) \
 	$(block_proplist_SOURCES) $(cfold_SOURCES) \
 	$(chop_proplist_SOURCES) $(concat_and_scale_proplist_SOURCES) \
-	$(concat_proplist_SOURCES) $(eff_ampl_SOURCES) \
-	$(eff_mass_SOURCES) $(fold_SOURCES) \
+	$(concat_cproplist_SOURCES) $(concat_proplist_SOURCES) \
+	$(eff_ampl_SOURCES) $(eff_mass_SOURCES) $(fold_SOURCES) \
 	$(jack_corrfunc_ratio_SOURCES) $(jack_fit_SOURCES) \
 	$(jack_ratio_SOURCES) $(jack_ratio2_SOURCES) \
 	$(merge_cproplists_SOURCES) $(merge_proplists_SOURCES) \
@@ -218,8 +223,8 @@ DIST_SOURCES = $(average_cproplist_SOURCES) \
 	$(average_proplist_SOURCES) $(block_proplist_SOURCES) \
 	$(cfold_SOURCES) $(chop_proplist_SOURCES) \
 	$(concat_and_scale_proplist_SOURCES) \
-	$(concat_proplist_SOURCES) $(eff_ampl_SOURCES) \
-	$(eff_mass_SOURCES) $(fold_SOURCES) \
+	$(concat_cproplist_SOURCES) $(concat_proplist_SOURCES) \
+	$(eff_ampl_SOURCES) $(eff_mass_SOURCES) $(fold_SOURCES) \
 	$(jack_corrfunc_ratio_SOURCES) $(jack_fit_SOURCES) \
 	$(jack_ratio_SOURCES) $(jack_ratio2_SOURCES) \
 	$(merge_cproplists_SOURCES) $(merge_proplists_SOURCES) \
@@ -383,6 +388,9 @@ HDRS =
 concat_proplist_SOURCES = concat_proplist.cc
 concat_proplist_CPPFLAGS = 
 concat_proplist_DEPENDENCIES = build_lib
+concat_cproplist_SOURCES = concat_cproplist.cc
+concat_cproplist_CPPFLAGS = 
+concat_cproplist_DEPENDENCIES = build_lib
 block_proplist_SOURCES = block_proplist.cc
 block_proplist_CPPFLAGS = 
 block_proplist_DEPENDENCIES = build_lib
@@ -543,6 +551,10 @@ concat_and_scale_proplist$(EXEEXT): $(concat_and_scale_proplist_OBJECTS) $(conca
 	@rm -f concat_and_scale_proplist$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(concat_and_scale_proplist_OBJECTS) $(concat_and_scale_proplist_LDADD) $(LIBS)
 
+concat_cproplist$(EXEEXT): $(concat_cproplist_OBJECTS) $(concat_cproplist_DEPENDENCIES) $(EXTRA_concat_cproplist_DEPENDENCIES) 
+	@rm -f concat_cproplist$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(concat_cproplist_OBJECTS) $(concat_cproplist_LDADD) $(LIBS)
+
 concat_proplist$(EXEEXT): $(concat_proplist_OBJECTS) $(concat_proplist_DEPENDENCIES) $(EXTRA_concat_proplist_DEPENDENCIES) 
 	@rm -f concat_proplist$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(concat_proplist_OBJECTS) $(concat_proplist_LDADD) $(LIBS)
@@ -607,6 +619,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cfold-cfold.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/chop_proplist-chop_proplist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/concat_and_scale_proplist-concat_and_scale_proplist.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/concat_cproplist-concat_cproplist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/concat_proplist-concat_proplist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eff_ampl-eff_ampl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eff_mass-eff_mass.Po@am__quote@
@@ -720,6 +733,20 @@ concat_and_scale_proplist-concat_and_scale_proplist.obj: concat_and_scale_propli
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='concat_and_scale_proplist.cc' object='concat_and_scale_proplist-concat_and_scale_proplist.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_and_scale_proplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o concat_and_scale_proplist-concat_and_scale_proplist.obj `if test -f 'concat_and_scale_proplist.cc'; then $(CYGPATH_W) 'concat_and_scale_proplist.cc'; else $(CYGPATH_W) '$(srcdir)/concat_and_scale_proplist.cc'; fi`
+
+concat_cproplist-concat_cproplist.o: concat_cproplist.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_cproplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT concat_cproplist-concat_cproplist.o -MD -MP -MF $(DEPDIR)/concat_cproplist-concat_cproplist.Tpo -c -o concat_cproplist-concat_cproplist.o `test -f 'concat_cproplist.cc' || echo '$(srcdir)/'`concat_cproplist.cc
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/concat_cproplist-concat_cproplist.Tpo $(DEPDIR)/concat_cproplist-concat_cproplist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='concat_cproplist.cc' object='concat_cproplist-concat_cproplist.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_cproplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o concat_cproplist-concat_cproplist.o `test -f 'concat_cproplist.cc' || echo '$(srcdir)/'`concat_cproplist.cc
+
+concat_cproplist-concat_cproplist.obj: concat_cproplist.cc
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_cproplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT concat_cproplist-concat_cproplist.obj -MD -MP -MF $(DEPDIR)/concat_cproplist-concat_cproplist.Tpo -c -o concat_cproplist-concat_cproplist.obj `if test -f 'concat_cproplist.cc'; then $(CYGPATH_W) 'concat_cproplist.cc'; else $(CYGPATH_W) '$(srcdir)/concat_cproplist.cc'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/concat_cproplist-concat_cproplist.Tpo $(DEPDIR)/concat_cproplist-concat_cproplist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='concat_cproplist.cc' object='concat_cproplist-concat_cproplist.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_cproplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o concat_cproplist-concat_cproplist.obj `if test -f 'concat_cproplist.cc'; then $(CYGPATH_W) 'concat_cproplist.cc'; else $(CYGPATH_W) '$(srcdir)/concat_cproplist.cc'; fi`
 
 concat_proplist-concat_proplist.o: concat_proplist.cc
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(concat_proplist_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT concat_proplist-concat_proplist.o -MD -MP -MF $(DEPDIR)/concat_proplist-concat_proplist.Tpo -c -o concat_proplist-concat_proplist.o `test -f 'concat_proplist.cc' || echo '$(srcdir)/'`concat_proplist.cc
