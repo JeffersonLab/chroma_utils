@@ -16,12 +16,12 @@ namespace CovFit {
 
   // Types snarfed from ADAT. These should be merged somehow
   typedef float  Real;
-  typedef double Double;
+  //  typedef double double;
   typedef int    Integer;
   typedef bool   Boolean;
 
-  typedef std::complex<Double> DComplex ;
-  typedef std::complex<Real> Complex ;
+  typedef std::complex<double> DComplex ;
+  typedef std::complex<float> Complex ;
 
   /**  
   struct Complex
@@ -32,13 +32,13 @@ namespace CovFit {
 
   struct DComplex
   {
-    Double  re;
-    Double  im;
+    double  re;
+    double  im;
   };
   **/
   
   // CovFit specific
-  typedef Array< Array<Double> > PropList ;
+  typedef Array< Array<double> > PropList ;
   typedef Array< Array<DComplex> > cPropList ;
 
   //! A splice routine usefull for Jackknife
@@ -83,15 +83,15 @@ namespace CovFit {
   void WriteProplist(PropList& pr, int Nx, const std::string& file);
   void WriteProplist(cPropList& pr, int Nx, const std::string& file);
 
-  int ReadProplist(Array< Array< Array<Double> > >& pr, const std::string& file);
+  int ReadProplist(Array< Array< Array<double> > >& pr, const std::string& file);
   int ReadProplist(Array< Array< Array<DComplex> > >& pr, const std::string& file);
 
-  void WriteProplist(Array< Array< Array<Double> > >& pr, int Nx, const std::string& file);
+  void WriteProplist(Array< Array< Array<double> > >& pr, int Nx, const std::string& file);
   void WriteProplist(Array< Array< Array<DComplex> > >& pr, int Nx, const std::string& file);
   
-  int ReadProplist(Array< Array< Array2d<Double> > >& pr, const std::string& file); 
+  int ReadProplist(Array< Array< Array2d<double> > >& pr, const std::string& file); 
  
-  void WriteProplist(Array< Array< Array2d<Double> > >& pr, int Nx, const std::string& file);
+  void WriteProplist(Array< Array< Array2d<double> > >& pr, int Nx, const std::string& file);
 
   int ReadProplist(Array< Array< Array2d<DComplex> > >& pr, const std::string& file) ; 
 

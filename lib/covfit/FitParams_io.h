@@ -34,7 +34,10 @@
 
 #include "xml_array.h"
 #include "io/adat_xmlio.h"
-#include "covfit/proplist.h"   // this is only to get Double
+#include "io/key_val_db.h"
+#include "ConfDataStoreDB.h"
+#include "formfac/hadron_2pt_corr.h"
+
 
 #ifndef __READFITPARAMS___
 #define __READFITPARAMS___
@@ -44,7 +47,7 @@ namespace CovFit {
   // Namespace composition
   using XMLArray::Array;
   using namespace ADATXML;
-
+  using namespace FF ;
 
   enum ParticleType
   { 
@@ -79,7 +82,7 @@ namespace CovFit {
   class Fitter_t{
   public:
     int Niter ;
-    Double Toler ;
+    double Toler ;
   };
 
   class CovarMat_t{
@@ -94,7 +97,7 @@ namespace CovFit {
     std::string fitfunc ;
     int min_dist ;
     int max_dist ;
-    Array<Double> fit_params ;
+    Array<double> fit_params ;
     Array<int> fixedpar ;
     Array<int> mass_param ;
     double period ;
@@ -113,7 +116,19 @@ namespace CovFit {
     SinkType     sink ;
     ParticleType type ;
 
-    Array<Double> quark_mass ;
+    Array<double> quark_mass ;
+    int stopper ;
+    Array<int> range ;
+    FitterParam fit ;
+  } ;
+
+  class DBState_t{
+  public:
+    std::string name ;
+    std::string filename ;
+
+    KeyHadron2PtCorr_t key ;
+    
     int stopper ;
     Array<int> range ;
     FitterParam fit ;

@@ -592,7 +592,7 @@ double BaseFitter::dot(double *x, double *y, int n)
 }
 
 
-void BaseFitter::getParams(Array<Double>& p, Array<Double>& e){
+void BaseFitter::getParams(Array<double>& p, Array<double>& e){
   p.resize(npar);
   e.resize(npar);
   for(int i(0);i<npar;i++){
@@ -601,7 +601,7 @@ void BaseFitter::getParams(Array<Double>& p, Array<Double>& e){
   }
 }
 
-void BaseFitter::setParams(const Array<Double>& p ){
+void BaseFitter::setParams(const Array<double>& p ){
   if(p.size()!=npar){
     cerr<<"OOPS! "<<npar<<" != "<< p.size();
     exit(1001);

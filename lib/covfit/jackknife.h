@@ -19,18 +19,18 @@ namespace CovFit {
 
   class Value{
   public:
-    Double v ;
-    Double e ;
+    double v ;
+    double e ;
 
-    Value(Double a, Double b):v(a),e(b){}
+    Value(double a, double b):v(a),e(b){}
       /* This neat contructor makes possible to use the overloaded 
-	 << operator to output convert Array<Double> to Value and then
+	 << operator to output convert Array<double> to Value and then
 	 write out the result!!  */
-      Value(const Array<Double>& j):v(mean(j)),e(jackerr(j)){}
+      Value(const Array<double>& j):v(mean(j)),e(jackerr(j)){}
 	
   } ;
 
-  Value jackknife(const Array<Double>& d){
+  Value jackknife(const Array<double>& d){
     return Value(mean(d),jackerr(d));
   }
 
@@ -56,6 +56,7 @@ namespace CovFit {
   ostream& operator<<(ostream& s, const Value& p)
     {
       s << p.v << " +/- " << p.e;
+      return s ;
     }
 
 
@@ -203,8 +204,8 @@ namespace CovFit {
 
   template<typename T> 
     void jackfit( Array<Array<T> >& jfitpar, //jfitpar[0] carries the guess
-		  Array<Double>& conf, //jfitpar[0] carries the guess
-		  Array<Double>& chi2,
+		  Array<double>& conf, //jfitpar[0] carries the guess
+		  Array<double>& chi2,
 		  Fitter& fit,
 		  Array<T>& x,
 		  Array< Array<T> >& y,
@@ -232,8 +233,8 @@ namespace CovFit {
 
   template<typename T> 
     void jackfit( Array<Array<T> >& jfitpar, //jfitpar[0] carries the guess
-		  Array<Double>& conf, //jfitpar[0] carries the guess
-		  Array<Double>& chi2,
+		  Array<double>& conf, //jfitpar[0] carries the guess
+		  Array<double>& chi2,
 		  Fitter& fit,
 		  Array<T>& x,
 		  Array< Array<T> >& y,
@@ -247,7 +248,7 @@ namespace CovFit {
     }
 
   void jackCovarMat(Array<CovarMat>& cm,
-		    const Array<Double>& x,
+		    const Array<double>& x,
 		    const PropList& y,
 		    int block)
   {
@@ -266,8 +267,8 @@ namespace CovFit {
  
  template<typename T> 
    void jackcofit( Array<Array<T> >& jfitpar, //jfitpar[0] carries the guess
-		   Array<Double>& conf, //jfitpar[0] carries the guess
-		   Array<Double>& chi2,
+		   Array<double>& conf, //jfitpar[0] carries the guess
+		   Array<double>& chi2,
 		   coFitter& fit,
 		   Array<CovarMat>& cm)
    {

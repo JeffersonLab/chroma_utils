@@ -2,12 +2,20 @@
 # Boiler Plate stuff: Autoconf Substitutions etc
 #
 INCFLAGS = -I@top_srcdir@/lib -I@top_builddir@/include \
-           -I@top_srcdir@/other_libs/xpath_reader/include
+           -I@top_srcdir@/other_libs/xpath_reader/include \
+           -I@top_builddir@/other_libs/c-lime/include \
+           -I@top_srcdir@/other_libs/filedb/src \
+           -I@top_srcdir@/other_libs/filedb/filehash \
+           -I@top_srcdir@/include/recipes
 
 AM_CXXFLAGS = $(INCFLAGS) @CXXFLAGS@ @LIBXML2_CXXFLAGS@
+
 AM_LDFLAGS = -L@top_builddir@/lib \
              -L@top_builddir@/other_libs/xpath_reader/lib \
+             -L@top_builddir@/other_libs/filedb/src \
+             -L@top_builddir@/other_libs/filedb/filehash \
              @LDFLAGS@
+
 LDADD = -ladat -lXPathReader -lxmlWriter @LIBXML2_LIBS@ @LIBS@
 
 #

@@ -126,7 +126,7 @@ void CovarMat::SetDataList(double *xd, double *ll,int length)
   }
 }
 
-void CovarMat::SetDataList(const Array<Double>& xd, const PropList& ll)
+void CovarMat::SetDataList(const Array<double>& xd, const PropList& ll)
 {
   if(xd.size() != npoints){
     fprintf(stderr,"x-Lenght not good!\n");

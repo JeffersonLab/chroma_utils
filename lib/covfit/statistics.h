@@ -49,11 +49,11 @@ namespace CovFit {
   } 
   
   template<typename T> T err(const Array<T>& data){
-    return stdev(data)/sqrt(Double(data.size())) ;
+    return stdev(data)/sqrt(double(data.size())) ;
   } 
   
   template<typename T> T jackerr(const Array<T>& data){
-    return Double(data.size())*stdev(data)/sqrt(double(data.size()+1)); 
+    return double(data.size())*stdev(data)/sqrt(double(data.size()+1)); 
   }
 
   template<typename T> T booterr(const Array<T>& data){

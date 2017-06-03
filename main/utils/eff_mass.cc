@@ -12,8 +12,8 @@ using namespace std;
 using namespace CovFit ;
 
 void write(const std::string& t,
-           const Array<Double>& v,
-           const Array<Double>& e){
+           const Array<double>& v,
+           const Array<double>& e){
   //Needs size checking                                                        
   for(int i(0);i<v.size();i++)
     cout<<t<<": "<<i<<" "<<v[i]<<" "<<e[i]<<endl ;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
   PropList pp ;
   PropList jmass ;
   int Nx = ReadProplist(pp,argv[1+arg_ofset]);
-  Array< Array <Double> > jpp(pp.size()) ;
+  Array< Array <double> > jpp(pp.size()) ;
   
   //cout<<Nx<<endl ;
   for(int j(0);j<pp.size();j++){
@@ -118,8 +118,8 @@ int main(int argc, char **argv)
   }
 
 
-  Array<Double> mass = mean(jmass) ;
-  Array<Double> e_mass = jackerr(jmass) ;
+  Array<double> mass = mean(jmass) ;
+  Array<double> e_mass = jackerr(jmass) ;
 
   write("EFFMASS", mass, e_mass) ;
   

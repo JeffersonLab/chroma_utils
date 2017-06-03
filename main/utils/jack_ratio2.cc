@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     }
   
 
-  Array<Double> mres,e_mres;
+  Array<double> mres,e_mres;
 
   mres = mean(jmres) ;
   e_mres = jackerr(jmres) ;
@@ -76,8 +76,8 @@ int main(int argc, char **argv)
   WriteProplist(jmres,Nx,"jk_ratio2.lst");
 
   for(int j(0);j<Ncnfs;j++){
-    Array<Double> d = jmres[j] - mres ;
-    jmres[j] = mres + Double(Ncnfs-1)*d ;
+    Array<double> d = jmres[j] - mres ;
+    jmres[j] = mres + double(Ncnfs-1)*d ;
   }
   WriteProplist(jmres,Nx,"ratio2.lst");
 }

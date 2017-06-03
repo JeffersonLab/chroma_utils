@@ -154,11 +154,11 @@ protected:
 
   bool  FailedFit(){return fit_failed||singular_Hessian ;}
   bool  Convergence(){return convergence;}
-  Double ChiSq(){return chi_square;}
-  Double Confidence(){return confidence ;}
+  double ChiSq(){return chi_square;}
+  double Confidence(){return confidence ;}
   int Ndof(){return ndof;}
 
-  void setRange(const Double& x,const Double& xx){ xlow = x; xhigh = xx ;}
+  void setRange(const double& x,const double& xx){ xlow = x; xhigh = xx ;}
 
   void ReadParams(const char* file2);
   virtual void dphi(double *b, double *grad)=0;
@@ -167,9 +167,9 @@ protected:
   //virtual void ReadData(char *fp)=0;
   virtual void Fit()=0;
 
-  void getParams(Array<Double>& p, Array<Double>& e);
+  void getParams(Array<double>& p, Array<double>& e);
 
-  void setParams(const Array<Double>& p );
+  void setParams(const Array<double>& p );
 
   void setFixedParams(const Array<int>& f ) ;
 
@@ -218,7 +218,7 @@ public:
 
   void ReadData(const char* f) ;
   void setData(int N, double *x, double *y, double *w);
-  void setData(Array<Double>& x, Array<Double>& y, Array<Double>& ey) ;
+  void setData(Array<double>& x, Array<double>& y, Array<double>& ey) ;
 
   void dphi(double *b, double *grad);
   void ddphi(double *b, double **a);

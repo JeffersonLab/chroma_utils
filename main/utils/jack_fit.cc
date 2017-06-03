@@ -1,5 +1,3 @@
-// $Id: jack_fit.cc,v 2.0 2008/12/05 04:44:06 edwards Exp $
-// $Log: jack_fit.cc,v $
 // Revision 2.0  2008/12/05 04:44:06  edwards
 // Changed to version 2.0.
 //
@@ -17,12 +15,14 @@
 #include <iostream>
 #include <cstdio>
 
+#include <covfit/FitParams_io.h>
+
 #include <covfit/statistics.h>
 #include <covfit/Function.h>
 #include <covfit/fitters/fitfunctions.h>
 #include <covfit/fitter.h>
 #include <covfit/jackknife.h>
-#include <covfit/FitParams_io.h>
+
 
 //#include "jackknife_io.h"
 //#include "basic_functions.h"
@@ -31,16 +31,16 @@ using namespace std;
 using namespace CovFit ;
 //assuming that these are exponentials so we reorder the
 //amplitudes together with the masses
-void orderMasses( Array<Double>& ofp,  
-                  Array<Double>& oefp,
+void orderMasses( Array<double>& ofp,  
+                  Array<double>& oefp,
                   const Array<int>& im){
   for(int j(0);j<im.size()-1;j++){
     for(int i(0);i<im.size()-j-1;i++){
       if(ofp[im[i]]>ofp[im[i+1]]){//Reorder
-        Double A = ofp[im[i]-1] ;
-        Double M = ofp[im[i]  ] ;
-        Double eA = oefp[im[i]-1] ;
-        Double eM = oefp[im[i]  ] ;
+        double A = ofp[im[i]-1] ;
+        double M = ofp[im[i]  ] ;
+        double eA = oefp[im[i]-1] ;
+        double eM = oefp[im[i]  ] ;
 
         //suffle masses
         ofp[im[i  ]-1] = ofp[im[i+1]-1] ;
@@ -61,8 +61,8 @@ void orderMasses( Array<Double>& ofp,
 
 
 void write(const std::string& t,
-           const Array<Double>& v,
-           const Array<Double>& e){
+           const Array<double>& v,
+           const Array<double>& e){
   //Needs size checking                                                        
   for(int i(0);i<v.size();i++)
     cout<<t<<": "<<i<<" "<<v[i]<<" "<<e[i]<<endl ;
@@ -128,12 +128,12 @@ int main(int argc, char **argv)
   e_args.fixpar = fit.fixedpar ;
   
   //calculate the covariance matrix
-  Array<Double> time(Nt) ;
+  Array<double> time(Nt) ;
   for(int t(0);t<Nt;t++) time[t] = t ;
   CovarMat cm(Nt,1);
 
   coFitter efit(*expo,e_args);
-  Array<Double> guesspar, fitpar, fiterr ;
+  Array<double> guesspar, fitpar, fiterr ;
 
   guesspar = fit.fit_params ;
 
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     cm.CalcCovarMat();
     
     
-    Array<Double> jfitpar,fiterr ;
+    Array<double> jfitpar,fiterr ;
     mass[j].resize(Nt);
     for(int mind(fit.min_dist);mind<fit.max_dist;mind++){
       //guesspar = fit.fit_params ;
@@ -170,13 +170,13 @@ int main(int argc, char **argv)
   }
 
 
-  Array<Double> av_mass = mean(mass) ;
+  Array<double> av_mass = mean(mass) ;
 
   PropList tt_mass(Ncnfs) ;
   for(int j(0);j<Ncnfs;j++)
     {
-      Array<Double> d = mass[j] - av_mass ;
-      tt_mass[j] = av_mass + Double(Ncnfs-1)*d ;
+      Array<double> d = mass[j] - av_mass ;
+      tt_mass[j] = av_mass + double(Ncnfs-1)*d ;
     }
   WriteProplist(tt_mass,Nx,ensem_out);
 

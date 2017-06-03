@@ -105,7 +105,7 @@ class CovarMat{
   */
   void ReadDataList(char *file);
   void SetDataList(double *xd, double *ll,int length ) ;
-  void SetDataList(const Array<Double>& xd, const PropList& ll) ;
+  void SetDataList(const Array<double>& xd, const PropList& ll) ;
   void CalcCovarMat();
   void CalcJackCovarMat(); //covariance matrix for a jackknifed observable
   void WriteCovarMat(char *file);

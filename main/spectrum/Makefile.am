@@ -1,10 +1,11 @@
 #
 # Boiler Plate stuff: Autoconf Substitutions etc
 #
-INCFLAGS = -I@top_srcdir@/lib -I@top_builddir@/include \
-           -I@top_srcdir@/other_libs/xpath_reader/include
 
-AM_CXXFLAGS = $(INCFLAGS) @CXXFLAGS@ @LIBXML2_CXXFLAGS@
+AM_CXXFLAGS = -I@top_srcdir@/lib -I@top_builddir@/include \
+              -I@top_srcdir@/other_libs/xpath_reader/include \
+              $(INCFLAGS) @CXXFLAGS@ @LIBXML2_CXXFLAGS@
+
 AM_LDFLAGS = -L@top_builddir@/lib \
              -L@top_builddir@/other_libs/xpath_reader/lib \
              @LDFLAGS@
@@ -29,7 +30,7 @@ HDRS=spectrum.h
 ##   in @prefix@/bin by 'make install' then add them to nodist_PROGRAMS.
 ##   Another option is to add it to check_PROGRAMS, which means it will only
 ##   be built by 'make check' and is not installed.
-bin_PROGRAMS = spectrum jack_spectrum
+bin_PROGRAMS = spectrum jack_spectrum spectrum_db
 
 #
 # The program and its dependencies

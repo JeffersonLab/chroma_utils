@@ -44,7 +44,7 @@ int main(int argc, char **argv)
   
 
   PropList pp ;
-  Array<Double> av,er ;
+  Array<double> av,er ;
   int Nx = ReadProplist(pp,argv[1]);
 
   av = mean(pp) ;

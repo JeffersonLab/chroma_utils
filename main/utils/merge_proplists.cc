@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
   cout << "Number of files: "<<Nfiles<<endl ;
   PropList pp ;
-  Array< Array< Array<Double> > > av ;
+  Array< Array< Array<double> > > av ;
   Array< Array< Array<DComplex> > > c ;
 
   int Nx,Nt ;

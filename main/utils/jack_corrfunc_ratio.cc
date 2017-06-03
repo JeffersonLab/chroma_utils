@@ -28,8 +28,8 @@ using namespace CovFit ;
 
 
 void write(const std::string& t,
-           const Array<Double>& v,
-           const Array<Double>& e){
+           const Array<double>& v,
+           const Array<double>& e){
   //Needs size checking                                                        
   for(int i(0);i<v.size();i++)
     cout<<t<<": "<<i<<" "<<v[i]<<" "<<e[i]<<endl ;
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
     }
 
   PropList jmres(Ncnfs) ;
-  Array<Double> fmres(Ncnfs) ;
+  Array<double> fmres(Ncnfs) ;
 
   //Jackknife loop 
   for(int j(0);j<Ncnfs;j++)
@@ -84,12 +84,12 @@ int main(int argc, char **argv)
       splice(jtwoP,twoP,j,j) ;
       splice(jP1,P1,j,j) ;
       splice(jP2,P2,j,j) ;
-      Array<Double> mtwoP = mean(jtwoP) ;
-      Array<Double> mpp = mean(jP1)*mean(jP2) ;
+      Array<double> mtwoP = mean(jtwoP) ;
+      Array<double> mpp = mean(jP1)*mean(jP2) ;
       jmres[j] = mtwoP/mpp ;
     }
 
-  Array<Double> mres, e_mres ;
+  Array<double> mres, e_mres ;
   
   mres = mean(jmres) ;
   e_mres = jackerr(jmres) ;
@@ -98,8 +98,8 @@ int main(int argc, char **argv)
 
 
 
-  Array<Double> mass, e_mass ;
-  Array<Array<Double> > jmass ;
+  Array<double> mass, e_mass ;
+  Array<Array<double> > jmass ;
 
   jmass = effmass(jmres) ;
 
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
    //rescale up fluctuations
   for(int j(0);j<Ncnfs;j++)
     {
-      Array<Double> d = jmres[j] - mres ;
-      ratio[j] = mres + Double(Ncnfs-1)*d ;
+      Array<double> d = jmres[j] - mres ;
+      ratio[j] = mres + double(Ncnfs-1)*d ;
     }
   WriteProplist(ratio,Nx,argv[1]);
 

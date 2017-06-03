@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     }
 
   PropList jmres(Ncnfs) ;
-  Array<Double> fmres(Ncnfs) ;
+  Array<double> fmres(Ncnfs) ;
   Polynomium P(1);
   
   FitterArgs fargs ;
@@ -63,11 +63,11 @@ int main(int argc, char **argv)
   fargs.xhigh = atoi(argv[2]);
   fargs.npar = P.Npar();
   Fitter fit(P,fargs);
-  Array<Double> time(Nt) ;
+  Array<double> time(Nt) ;
   for(int t(0);t<Nt;t++)
     time[t] = t ;
 
-  Array<Double> v(1),e(1);
+  Array<double> v(1),e(1);
   //Jackknife loop 
   for(int j(0);j<Ncnfs;j++)
     {
@@ -75,12 +75,12 @@ int main(int argc, char **argv)
       PropList jpp ;
       splice(jmp,mp,j,j) ;
       splice(jpp,pp,j,j) ;
-      Array<Double> mmp = mean(jmp) ;
-      Array<Double> emp = err (jmp) ;
-      Array<Double> mpp = mean(jpp) ;
-      Array<Double> epp = err (jpp) ;
+      Array<double> mmp = mean(jmp) ;
+      Array<double> emp = err (jmp) ;
+      Array<double> mpp = mean(jpp) ;
+      Array<double> epp = err (jpp) ;
       jmres[j] = mmp/mpp ;
-      Array<Double> err = jmres[j]*sqrt(emp*emp/(mmp*mmp) + epp*epp/(mpp*mpp));
+      Array<double> err = jmres[j]*sqrt(emp*emp/(mmp*mmp) + epp*epp/(mpp*mpp));
      
       if(j==0){
 	v[0] = jmres[j][1] ;
@@ -93,7 +93,7 @@ int main(int argc, char **argv)
       fmres[j] = v[0] ;
     }
   
-  Array<Double> mres, e_mres ;
+  Array<double> mres, e_mres ;
   
   mres = mean(jmres) ;
   e_mres = jackerr(jmres) ;
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
   for(int t(0);t<Nt;t++)
     cout<<"RATIO: "<<t<<" "<<mres[t]<<" "<< e_mres[t]<<endl ;
 
-  Double val, e_val ;
+  double val, e_val ;
   val = mean(fmres) ;
   e_val = jackerr(fmres) ;
 

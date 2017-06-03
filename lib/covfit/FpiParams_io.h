@@ -47,13 +47,13 @@ namespace CovFit {
     std::string filenameSP ;
     std::string filenameSS ;
     
-    Array<Double> quark_mass ;
+    Array<double> quark_mass ;
     int mint ;
     int maxt ;
-    Array<Double> fit_paramsSP ;
-    Array<Double> fit_paramsSS ;
+    Array<double> fit_paramsSP ;
+    Array<double> fit_paramsSS ;
     
-    Double mres ;
+    double mres ;
     int block ;
   } ;
 

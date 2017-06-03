@@ -12,8 +12,8 @@ using namespace std;
 using namespace CovFit ;
 
 void write(const std::string& t,
-           const Array<Double>& v,
-           const Array<Double>& e){
+           const Array<double>& v,
+           const Array<double>& e){
   //Needs size checking                                                        
   for(int i(0);i<v.size();i++)
     cout<<t<<": "<<i<<" "<<v[i]<<" "<<e[i]<<endl ;
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 
   PropList pp ;
   int Nx = ReadProplist(pp,argv[1+arg_ofset]);
-  Array< Array <Double> > jpp(pp.size()) ;
+  Array< Array <double> > jpp(pp.size()) ;
   PropList jAmp(pp.size()) ;
 
   cout<<"Nx = "<<Nx<<endl ;
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
   cout<<"Nt = "<<Nt<<endl ;
   for(int j(0);j<pp.size();j++){
     cout<<"Doing jacknife sample: "<<j<<endl ;
-    Array<Double> jj(Nt);
+    Array<double> jj(Nt);
     for(int t(0);t<Nt;t++){
       if((t+d)<Nt)
 	jj[t] = jpp[j][t]*pow(jpp[j][t]/jpp[j][t+d],double(t)/double(d));
@@ -90,8 +90,8 @@ int main(int argc, char **argv)
   }
 
 
-  Array<Double> Ampl = mean(jAmp) ;
-  Array<Double> e_Ampl = jackerr(jAmp) ;
+  Array<double> Ampl = mean(jAmp) ;
+  Array<double> e_Ampl = jackerr(jAmp) ;
 
   write("EFFAMPL", Ampl, e_Ampl) ;
   

@@ -19,7 +19,7 @@ namespace CovFit
     for(int i(0);i<props.size();i++)
       props[i].resize(Nt);
     
-    Double imaginary_part_to_be_discarded ;
+    double imaginary_part_to_be_discarded ;
     for(int i(0);i<props.size();i++)
       for(int t(0);t<props[i].size();t++)
 	{
@@ -53,12 +53,12 @@ namespace CovFit
       for(int t(0);t<props[i].size();t++)
 	{
 	  int tt ;
-	  Double re ;
+	  double re ;
 	  file>>tt>>re ; //props[i][t].re ;
 	  if(fu==0)
 	    props[i][t] = DComplex(re,0.0) ;
 	  else{
-	    Double im ;
+	    double im ;
 	    file>>im ; //props[i][t].im ;
 	    props[i][t] = DComplex(re,im) ;
 	  }
@@ -102,7 +102,7 @@ namespace CovFit
     file.close();
   }
 
-  int ReadProplist(Array<Array< Array<Double> > >& props ,const string& f){
+  int ReadProplist(Array<Array< Array<double> > >& props ,const string& f){
     ifstream file(f.c_str());
     int nprops ;
     int Nt,Nx,fu,bar  ;
@@ -117,7 +117,7 @@ namespace CovFit
 	props[i][k].resize(bar) ;
     }
     
-    Double imaginary_part_to_be_discarded ;
+    double imaginary_part_to_be_discarded ;
     for(int i(0);i<props.size();i++)
       for(int t(0);t<props[i].size();t++)
 	{
@@ -157,7 +157,7 @@ namespace CovFit
       for(int t(0);t<props[i].size();t++)
 	{
 	  int tt ;
-	  Double re, im ;
+	  double re, im ;
 	  file>>tt;
 	  for(int l(0);l<props[i][t].size();l++){
 	    file>>re; //props[i][t][l].re ;
@@ -180,7 +180,7 @@ namespace CovFit
   }
 
 
-  void WriteProplist(Array<Array< Array<Double> > >& props, 
+  void WriteProplist(Array<Array< Array<double> > >& props, 
 		     int Nx, const string& f){
     ofstream file(f.c_str());
     // Write header line                                                  
@@ -214,8 +214,8 @@ namespace CovFit
     file.close();
   }
 
-  int ReadProplist(Array< Array< Array2d<Double> > >& pr, const std::string& file){
-    Array< Array< Array<Double> > > tt ;
+  int ReadProplist(Array< Array< Array2d<double> > >& pr, const std::string& file){
+    Array< Array< Array<double> > > tt ;
     int r  = ReadProplist(tt, file) ;
     //pr = tt ;
     pr.resize(tt.size());
@@ -238,10 +238,10 @@ namespace CovFit
     return r ;
   }
 
-  void WriteProplist(Array< Array< Array2d<Double> > >& pr, int Nx, const std::string& file){
-    Array< Array< Array<Double> > > tt ;
+  void WriteProplist(Array< Array< Array2d<double> > >& pr, int Nx, const std::string& file){
+    Array< Array< Array<double> > > tt ;
     //tt=pr ;  // the underlying equal operators are somehow messed up...
-    std::cerr<<"void WriteProplist(Array< Array< Array2d<Double> > >& pr, int Nx, const std::string& file): does not work\n" ;
+    std::cerr<<"void WriteProplist(Array< Array< Array2d<double> > >& pr, int Nx, const std::string& file): does not work\n" ;
     exit(1);
     WriteProplist(tt, Nx, file) ;
   }

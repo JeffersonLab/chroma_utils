@@ -91,7 +91,7 @@ void Fitter::setData(int N, double *x, double *y, double *w)
   ndof = ndata-npar+fixpar;
 }
 
-void Fitter::setData(Array<Double>& x, Array<Double>& y, Array<Double>& w)
+void Fitter::setData(Array<double>& x, Array<double>& y, Array<double>& w)
 {
   int N(x.size());
 
