@@ -45,16 +45,16 @@ using namespace CovFit ;
 
 //assuming that these are exponentials so we reorder the
 //amplitudes together with the masses
-void orderMasses( Array<Double>& ofp,  
-		  Array<Double>& oefp,
+void orderMasses( Array<double>& ofp,  
+		  Array<double>& oefp,
 		  const Array<int>& im){
   for(int j(0);j<im.size()-1;j++){
     for(int i(0);i<im.size()-j-1;i++){
       if(ofp[im[i]]>ofp[im[i+1]]){//Reorder
-        Double A = ofp[im[i]-1] ;
-        Double M = ofp[im[i]  ] ;
-	Double eA = oefp[im[i]-1] ;
-        Double eM = oefp[im[i]  ] ;
+        double A = ofp[im[i]-1] ;
+        double M = ofp[im[i]  ] ;
+	double eA = oefp[im[i]-1] ;
+        double eM = oefp[im[i]  ] ;
 
 	//suffle masses
         ofp[im[i  ]-1] = ofp[im[i+1]-1] ;
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
     e_args.fixpar = param.sta[s].fit.fixedpar ;
     
     //calculate the covariance matrix
-    Array<Double> time(Nt) ;
+    Array<double> time(Nt) ;
     for(int t(0);t<Nt;t++) time[t] = t ;
     CovarMat cm(Nt,param.cov.block);
     cm.SetDataList(time,corr);
@@ -177,7 +177,7 @@ int main(int argc, char **argv)
     
     // CONTINUE with the fitting code
     coFitter efit(*expo,e_args);
-    Array<Double> guesspar, fitpar, fiterr ;
+    Array<double> guesspar, fitpar, fiterr ;
     guesspar = param.sta[s].fit.fit_params ;
     //string tt("fitlist."+param.sta[s].name) ;
     //ofstream ftl(tt.c_str());

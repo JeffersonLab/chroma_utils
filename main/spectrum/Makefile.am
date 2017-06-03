@@ -4,11 +4,18 @@
 
 AM_CXXFLAGS = -I@top_srcdir@/lib -I@top_builddir@/include \
               -I@top_srcdir@/other_libs/xpath_reader/include \
-              $(INCFLAGS) @CXXFLAGS@ @LIBXML2_CXXFLAGS@
+              -I@top_builddir@/other_libs/c-lime/include \
+              -I@top_srcdir@/other_libs/filedb/src \
+              -I@top_srcdir@/other_libs/filedb/filehash \
+              -I@top_srcdir@/include/recipes \
+               @CXXFLAGS@ @LIBXML2_CXXFLAGS@
 
 AM_LDFLAGS = -L@top_builddir@/lib \
              -L@top_builddir@/other_libs/xpath_reader/lib \
+             -L@top_builddir@/other_libs/filedb/src \
+             -L@top_builddir@/other_libs/filedb/filehash \
              @LDFLAGS@
+
 LDADD = -ladat -lXPathReader -lxmlWriter @LIBXML2_LIBS@ @LIBS@
 
 #
@@ -37,6 +44,9 @@ bin_PROGRAMS = spectrum jack_spectrum spectrum_db
 #
 spectrum_SOURCES =  spectrum.cc $(HDRS)
 spectrum_DEPENDENCIES = build_lib
+
+spectrum_db_SOURCES =  spectrum_db.cc $(HDRS)
+spectrum_db_DEPENDENCIES = build_lib
 
 jack_spectrum_SOURCES =  jack_spectrum.cc $(HDRS)
 jack_spectrum_DEPENDENCIES = build_lib

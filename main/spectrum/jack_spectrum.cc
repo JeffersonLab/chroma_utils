@@ -26,16 +26,16 @@ using namespace CovFit ;
 
 //assuming that these are exponentials so we reorder the
 //amplitudes together with the masses
-void orderMasses( Array<Double>& ofp,  
-		  Array<Double>& oefp,
+void orderMasses( Array<double>& ofp,  
+		  Array<double>& oefp,
 		  const Array<int>& im){
   for(int j(0);j<im.size()-1;j++){
     for(int i(0);i<im.size()-j-1;i++){
       if(ofp[im[i]]>ofp[im[i+1]]){//Reorder
-        Double A = ofp[im[i]-1] ;
-        Double M = ofp[im[i]  ] ;
-	Double eA = oefp[im[i]-1] ;
-        Double eM = oefp[im[i]  ] ;
+        double A = ofp[im[i]-1] ;
+        double M = ofp[im[i]  ] ;
+	double eA = oefp[im[i]-1] ;
+        double eM = oefp[im[i]  ] ;
 
 	//suffle masses
         ofp[im[i  ]-1] = ofp[im[i+1]-1] ;
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     e_args.fixpar = param.sta[s].fit.fixedpar ;
     
     //calculate the covariance matrix
-    Array<Double> time(Nt) ;
+    Array<double> time(Nt) ;
     for(int t(0);t<Nt;t++) time[t] = t ;
     CovarMat cm(Nt,param.cov.block);
     cm.SetDataList(time,corr);
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
     
     // CONTINUE with the fitting code
     coFitter efit(*expo,e_args);
-    Array<Double> guesspar, fitpar, fiterr ;
+    Array<double> guesspar, fitpar, fiterr ;
     guesspar = param.sta[s].fit.fit_params ;
     //string tt("fitlist."+param.sta[s].name) ;
     //ofstream ftl(tt.c_str());
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
       
       efit.setRange(mind,maxd) ;
 
-      Array< Array<Double> > jfitpar(Ncnfs) ;
+      Array< Array<double> > jfitpar(Ncnfs) ;
       for(int j(0);j<Ncnfs;j++)
 	{
 
@@ -190,11 +190,11 @@ int main(int argc, char **argv)
 	  par[j].resize(1);
 	  par[j][0] = jfitpar[j][i] ;	
 	}
-	Array<Double> mpar = mean(par) ;
+	Array<double> mpar = mean(par) ;
 	//Now do the rescaling
 	for(int j(0);j<Ncnfs;j++){
-	  Double d(jfitpar[j][i] - mpar[0]) ;
-	  par[j][0] = mpar[0] + Double(Ncnfs-1)*d ;
+	  double d(jfitpar[j][i] - mpar[0]) ;
+	  par[j][0] = mpar[0] + double(Ncnfs-1)*d ;
 	}
 	string tt(fname.str().c_str());
 	WriteProplist(par,Nx,tt) ;

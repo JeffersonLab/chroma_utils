@@ -4713,7 +4713,8 @@ ac_config_files="$ac_config_files main/Makefile"
 
 ac_config_files="$ac_config_files main/strippers/Makefile"
 
-#AC_CONFIG_FILES(main/spectrum/Makefile)
+ac_config_files="$ac_config_files main/spectrum/Makefile"
+
 #AC_CONFIG_FILES(main/mres/Makefile)
 #AC_CONFIG_FILES(main/fpi/Makefile)
 ac_config_files="$ac_config_files main/fitters/Makefile"
@@ -5500,6 +5501,7 @@ do
     "other_libs/Makefile") CONFIG_FILES="$CONFIG_FILES other_libs/Makefile" ;;
     "main/Makefile") CONFIG_FILES="$CONFIG_FILES main/Makefile" ;;
     "main/strippers/Makefile") CONFIG_FILES="$CONFIG_FILES main/strippers/Makefile" ;;
+    "main/spectrum/Makefile") CONFIG_FILES="$CONFIG_FILES main/spectrum/Makefile" ;;
     "main/fitters/Makefile") CONFIG_FILES="$CONFIG_FILES main/fitters/Makefile" ;;
     "main/utils/Makefile") CONFIG_FILES="$CONFIG_FILES main/utils/Makefile" ;;
 
