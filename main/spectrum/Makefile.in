@@ -187,6 +187,10 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/config/depcomp \
 	$(top_srcdir)/config/mkinstalldirs
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
+ADAT_CONFIG = @ADAT_CONFIG@
+ADAT_CXXFLAGS = @ADAT_CXXFLAGS@
+ADAT_LDFLAGS = @ADAT_LDFLAGS@
+ADAT_LIBS = @ADAT_LIBS@
 AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AUTOCONF = @AUTOCONF@
@@ -298,9 +302,9 @@ AM_LDFLAGS = -L@top_builddir@/lib \
              -L@top_builddir@/other_libs/xpath_reader/lib \
              -L@top_builddir@/other_libs/filedb/src \
              -L@top_builddir@/other_libs/filedb/filehash \
-             @LDFLAGS@
+              @ADAT_LDFLAGS@ @LDFLAGS@
 
-LDADD = -ladat -lXPathReader -lxmlWriter @LIBXML2_LIBS@ @LIBS@
+LDADD = -ladat -lXPathReader -lxmlWriter @ADAT_LIBS@ @LIBXML2_LIBS@ @LIBS@
 
 #
 # VPATH

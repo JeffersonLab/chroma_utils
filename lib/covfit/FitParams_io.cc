@@ -84,6 +84,15 @@ namespace CovFit {
     read(top,"CovarMat",fp.cov);
     read(top,"States"  ,fp.sta);   
   }
+
+  void read(XMLReader& xml, const string& path, DBFitParams_t& fp)
+  {
+    XMLReader top(xml, path);
+    
+    read(top,"Fitter"  ,fp.fit);
+    read(top,"CovarMat",fp.cov);
+    read(top,"States"  ,fp.sta);   
+  }
   
   
   void read(XMLReader& xml, const string& path, Fitter_t& ft)
@@ -187,6 +196,24 @@ namespace CovFit {
       }
     write(xml, path, src_type_str);
   }
+
+  void read(XMLReader& xml, const string& path, DBState_t& st)
+  {
+    XMLReader top(xml, path);
+    
+    read(top,"name"   ,st.name);
+    read(top,"filename"   ,st.filename);
+        
+    read(top,"stopper",st.stopper);
+    read(top,"range",st.range);
+
+    read(top,"Key",st.key);
+    
+    read(top,"fit",st.fit);
+    
+  }
+  
+
   
   
   //! Write a sink type enum
@@ -213,6 +240,17 @@ namespace CovFit {
   
   
   void write(XMLWriter& xml, const string& path, const FitParams_t& fp)
+  {
+    push(xml, path);
+    
+    write(xml,"Fitter"  ,fp.fit);
+    write(xml,"CovarMat",fp.cov);
+    write(xml,"States"   ,fp.sta);   
+    
+    pop(xml) ;
+  }
+
+  void write(XMLWriter& xml, const string& path, const DBFitParams_t& fp)
   {
     push(xml, path);
     
@@ -254,6 +292,25 @@ namespace CovFit {
     write(xml,"sink"     ,st.sink);
     
     write(xml,"quark_mass",st.quark_mass);
+    write(xml,"stopper",st.stopper);
+    write(xml,"range",st.range);
+    
+    write(xml,"fit",st.fit);
+   
+    
+    pop(xml) ;
+    
+  }
+
+  void write(XMLWriter& xml, const string& path, const DBState_t& st)
+  {
+    
+    push(xml, path);
+    
+    write(xml,"name"     ,st.name); 
+    write(xml,"filename" ,st.filename);
+    write(xml,"key" ,st.key);
+    
     write(xml,"stopper",st.stopper);
     write(xml,"range",st.range);
     

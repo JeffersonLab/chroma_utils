@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdio>
+#include "AllConfStoreDB.h"
 
 #include <covfit/statistics.h>
 #include <covfit/Function.h>
@@ -13,6 +14,7 @@
 
 using namespace std;
 using namespace CovFit ;
+using namespace FILEDB ;
 
 //assuming that these are exponentials so we reorder the
 //amplitudes together with the masses
@@ -56,12 +58,12 @@ int main(int argc, char **argv)
 
   PropList corr ;
 
-  FitParams_t param ;
+  DBFitParams_t param ;
   
   
   XMLReader xml_in(argv[1]);
   try{
-    read(xml_in,"/param_db", param) ;
+    read(xml_in,"/param_DB", param) ;
   }
   catch(const string& error) {
     cerr<<"OOOPS!! : "<<error<<"\n" ;
@@ -70,6 +72,7 @@ int main(int argc, char **argv)
   xml_in.close();
   
   cout<<"Number of states: "<<param.sta.size()<<endl ;
+  
 
   //initialize fitlist files
   for(int s(0);s<param.sta.size();s++){
@@ -93,8 +96,40 @@ int main(int argc, char **argv)
     cout<<"Reading state: "<<param.sta[s].name
 	<<" from file: "<<param.sta[s].filename<<endl ;
 
-    ReadProplist(corr,param.sta[s].filename);
-    
+    string dbase = param.sta[s].filename ;
+
+    //AllConfStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<PropList> > db;
+    ConfDataStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<PropList> > db;
+    try
+      {
+	// Open DB
+
+	if (db.open(dbase, O_RDONLY, 0400) != 0)
+	  {
+	    std::cerr << __func__ << ": error opening dbase= " << dbase << std::endl;
+	    exit(1);
+	  }
+      }
+    catch(const std::string& e) 
+      {
+	std::cerr << __func__ << ": Caught Exception: " << e << std::endl;
+	exit(1);
+      }
+    catch(std::exception& e) 
+      {
+	std::cerr << __func__ << ": Caught standard library exception: " << e.what() << std::endl;
+	exit(1);
+      }
+
+    //    ReadProplist(corr,param.sta[s].filename);
+    SerialDBKey<KeyHadron2PtCorr_t> k ;
+    SerialDBData<PropList> v ;
+    k.key()=param.sta[s].key ;
+    std::cout<<" Reading propagator key="<<k.key()<<std::endl ;
+    db.get(k,v);
+    std::cout<<" Got the data v.data().size()"<<v.data().size()<<std::endl ;
+    corr=v.data();
+    db.close();
     int Ncnfs(corr.size()) ;
     int Nt(corr[0].size());
     

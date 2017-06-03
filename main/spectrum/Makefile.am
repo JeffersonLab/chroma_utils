@@ -14,9 +14,9 @@ AM_LDFLAGS = -L@top_builddir@/lib \
              -L@top_builddir@/other_libs/xpath_reader/lib \
              -L@top_builddir@/other_libs/filedb/src \
              -L@top_builddir@/other_libs/filedb/filehash \
-             @LDFLAGS@
+              @ADAT_LDFLAGS@ @LDFLAGS@
 
-LDADD = -ladat -lXPathReader -lxmlWriter @LIBXML2_LIBS@ @LIBS@
+LDADD = -ladat -lXPathReader -lxmlWriter @ADAT_LIBS@ @LIBXML2_LIBS@ @LIBS@
 
 #
 # VPATH

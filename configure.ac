@@ -18,6 +18,43 @@ dnl --with-xxxx and --enable-xxxx switches
 dnl
 
 dnl
+dnl adat
+dnl
+AC_ARG_WITH(adat,
+  AC_HELP_STRING(
+    [--with-adat=DIR],
+    [Build on top of adat where adat is installed in DIR]
+  ),
+  [ADAT_HOME="$with_adat"]
+)
+
+
+echo ${ADAT_HOME}
+
+if test "X${ADAT_HOME}X" = "XX" ; then
+  AC_PATH_PROG(ADAT_CONFIG, [adat-config], [])
+else
+  AC_PATH_PROG(ADAT_CONFIG, [adat-config], [], [${ADAT_HOME}/bin:${PATH}])
+fi
+
+if test "X${ADAT_CONFIG}X" = "XX" ; then
+  AC_MSG_ERROR([adat configuration program adat-config not found.])
+fi
+
+AC_MSG_NOTICE([Found adat configuration program ${ADATXX_CONFIG}])
+AC_SUBST(ADAT_CXXFLAGS, "`${ADAT_CONFIG} --cxxflags`")
+AC_MSG_NOTICE([adat compile flags: ${ADAT_CXXFLAGS}])
+AC_SUBST(ADAT_LIBS,     "`${ADAT_CONFIG} --libs`")
+AC_MSG_NOTICE([adat libraries flags: ${ADAT_LIBS}])
+AC_SUBST(ADAT_LDFLAGS,     "`${ADAT_CONFIG} --ldflags`")
+AC_MSG_NOTICE([adat ldflags: ${ADAT_LDFLAGS}])
+
+
+dnl This function is defined in acinclude.m4
+dnl it tries to try to compile the program 
+
+
+dnl
 dnl libxml2
 dnl
 AC_ARG_WITH(libxml2,

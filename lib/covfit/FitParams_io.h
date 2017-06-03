@@ -141,17 +141,28 @@ namespace CovFit {
     Array<State_t>    sta ;
   } ;
 
+  class DBFitParams_t{
+  public:
+    Fitter_t          fit ;
+    CovarMat_t        cov ;
+    Array<DBState_t>    sta ;
+  } ;
+
   void read(XMLReader& xml, const std::string& path, SourceType& param) ;
   void read(XMLReader& xml, const std::string& path, SinkType& param) ;
 
   void read(XMLReader& xml, const std::string& path, FitParams_t& fp) ;
+  void read(XMLReader& xml, const std::string& path, DBFitParams_t& fp) ;
   void read(XMLReader& xml, const std::string& path, Fitter_t& ft) ;
   void read(XMLReader& xml, const std::string& path, CovarMat_t& cv) ;
   void read(XMLReader& xml, const std::string& path, State_t& st) ;
+  void read(XMLReader& xml, const std::string& path, DBState_t& st) ;
   void write(XMLWriter& xml, const std::string& path, const FitParams_t& fp) ;
+  void write(XMLWriter& xml, const std::string& path, const DBFitParams_t& fp) ;
   void write(XMLWriter& xml, const std::string& path, const Fitter_t& ft) ;
   void write(XMLWriter& xml, const std::string& path, const CovarMat_t& cv) ;
   void write(XMLWriter& xml, const std::string& path, const State_t& st) ;
+  void write(XMLWriter& xml, const std::string& path, const DBState_t& st) ;
 
 } // namespace CovFit
 

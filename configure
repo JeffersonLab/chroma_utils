@@ -604,6 +604,10 @@ ITPP_CONFIG
 LIBXML2_LIBS
 LIBXML2_CXXFLAGS
 LIBXML2_CONFIG
+ADAT_LDFLAGS
+ADAT_LIBS
+ADAT_CXXFLAGS
+ADAT_CONFIG
 RANLIB
 am__fastdepCC_FALSE
 am__fastdepCC_TRUE
@@ -698,6 +702,7 @@ ac_user_opts='
 enable_option_checking
 enable_silent_rules
 enable_dependency_tracking
+with_adat
 with_libxml2
 with_itpp
 enable_mpi
@@ -1340,6 +1345,7 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-adat=DIR         Build on top of adat where adat is installed in DIR
   --with-libxml2=DIR      Build on top of libxml2 where libxml2 is installed
                           in DIR
   --with-itpp=DIR         Use ITPP in DIR
@@ -4221,6 +4227,124 @@ END
     as_fn_error $? "Your 'rm' program is bad, sorry." "$LINENO" 5
   fi
 fi
+
+
+
+# Check whether --with-adat was given.
+if test "${with_adat+set}" = set; then :
+  withval=$with_adat; ADAT_HOME="$with_adat"
+
+fi
+
+
+
+echo ${ADAT_HOME}
+
+if test "X${ADAT_HOME}X" = "XX" ; then
+  # Extract the first word of "adat-config", so it can be a program name with args.
+set dummy adat-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ADAT_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ADAT_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ADAT_CONFIG="$ADAT_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ADAT_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ADAT_CONFIG=$ac_cv_path_ADAT_CONFIG
+if test -n "$ADAT_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ADAT_CONFIG" >&5
+$as_echo "$ADAT_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+else
+  # Extract the first word of "adat-config", so it can be a program name with args.
+set dummy adat-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_ADAT_CONFIG+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ADAT_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ADAT_CONFIG="$ADAT_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+as_dummy="${ADAT_HOME}/bin:${PATH}"
+for as_dir in $as_dummy
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_ADAT_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ADAT_CONFIG=$ac_cv_path_ADAT_CONFIG
+if test -n "$ADAT_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ADAT_CONFIG" >&5
+$as_echo "$ADAT_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+
+if test "X${ADAT_CONFIG}X" = "XX" ; then
+  as_fn_error $? "adat configuration program adat-config not found." "$LINENO" 5
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: Found adat configuration program ${ADATXX_CONFIG}" >&5
+$as_echo "$as_me: Found adat configuration program ${ADATXX_CONFIG}" >&6;}
+ADAT_CXXFLAGS="`${ADAT_CONFIG} --cxxflags`"
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: adat compile flags: ${ADAT_CXXFLAGS}" >&5
+$as_echo "$as_me: adat compile flags: ${ADAT_CXXFLAGS}" >&6;}
+ADAT_LIBS="`${ADAT_CONFIG} --libs`"
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: adat libraries flags: ${ADAT_LIBS}" >&5
+$as_echo "$as_me: adat libraries flags: ${ADAT_LIBS}" >&6;}
+ADAT_LDFLAGS="`${ADAT_CONFIG} --ldflags`"
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: adat ldflags: ${ADAT_LDFLAGS}" >&5
+$as_echo "$as_me: adat ldflags: ${ADAT_LDFLAGS}" >&6;}
+
+
 
 
 
