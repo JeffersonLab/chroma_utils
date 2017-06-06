@@ -91,7 +91,8 @@ namespace CovFit {
     
     read(top,"Fitter"  ,fp.fit);
     read(top,"CovarMat",fp.cov);
-    read(top,"States"  ,fp.sta);   
+    read(top,"States"  ,fp.sta);
+    read(top,"rescale" ,fp.rescale); 
   }
   
   
@@ -256,7 +257,8 @@ namespace CovFit {
     
     write(xml,"Fitter"  ,fp.fit);
     write(xml,"CovarMat",fp.cov);
-    write(xml,"States"   ,fp.sta);   
+    write(xml,"States"  ,fp.sta);   
+    write(xml,"rescale" ,fp.rescale);
     
     pop(xml) ;
   }

@@ -146,6 +146,7 @@ namespace CovFit {
     Fitter_t          fit ;
     CovarMat_t        cov ;
     Array<DBState_t>    sta ;
+    bool rescale ; 
   } ;
 
   void read(XMLReader& xml, const std::string& path, SourceType& param) ;

@@ -98,8 +98,9 @@ int main(int argc, char **argv)
 
     string dbase = param.sta[s].filename ;
 
-    //AllConfStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<PropList> > db;
-    ConfDataStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<PropList> > db;
+    //typedef EnsemScalar<EnsemVectorComplex>::Type_t SV;
+    AllConfStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<VectorComplex> >  db;
+    //ConfDataStoreDB< SerialDBKey<KeyHadron2PtCorr_t>,  SerialDBData<PropList> > db;
     try
       {
 	// Open DB
@@ -123,15 +124,37 @@ int main(int argc, char **argv)
 
     //    ReadProplist(corr,param.sta[s].filename);
     SerialDBKey<KeyHadron2PtCorr_t> k ;
-    SerialDBData<PropList> v ;
+    vector< SerialDBData<VectorComplex> >  v ;
     k.key()=param.sta[s].key ;
     std::cout<<" Reading propagator key="<<k.key()<<std::endl ;
     db.get(k,v);
-    std::cout<<" Got the data v.data().size()"<<v.data().size()<<std::endl ;
-    corr=v.data();
+    std::cout<<" Got the data v.size()="<<v.size()<<std::endl ;
+    corr.resize(v.size());
+    for(int c(0);c<v.size();c++){
+      int Nt=v[c].data().elem().size() ;
+      //std::cout<<"Nt = "<<Nt<<std::endl ;
+      corr[c].resize(Nt);
+      for(int t(0);t<Nt;t++)
+	corr[c][t]=toDouble(real(v[c].data().elem().elem(t)));
+    }
+
+        
     db.close();
+    
     int Ncnfs(corr.size()) ;
     int Nt(corr[0].size());
+
+    if(param.rescale){
+      double ReScale=corr[0][0];
+      std::cout<<"Rescale factor ="<<ReScale<<std::endl ;
+    
+      for(int c(0);c<v.size();c++)
+	for(int t(0);t<Nt;t++)
+	  corr[c][t]=corr[c][t]/ReScale ;
+    }
+    
+
+    
     
     
     Function* expo;
